@@ -5,12 +5,13 @@ import lombok.Getter;
 
 @Getter
 @AllArgsConstructor
-public enum Header {
+public enum HeaderKey {
 
-    FINNHUB_TOKEN("X-Finnhub-Token"),
+    RAPID("x-rapidapi-key"),
+    FINNHUB("X-Finnhub-Token"),
     AUTHORIZATION("Authorization")
     ;
 
-    private String header;
+    private final String value;
 
 }

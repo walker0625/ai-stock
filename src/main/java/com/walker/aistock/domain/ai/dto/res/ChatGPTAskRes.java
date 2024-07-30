@@ -1,14 +1,13 @@
-package com.walker.aistock.domain.ai.dto.req;
+package com.walker.aistock.domain.ai.dto.res;
 
-import com.walker.aistock.domain.ai.dto.vo.Message;
+import com.walker.aistock.domain.ai.dto.vo.ChoiceVO;
 import lombok.Data;
 
 import java.util.List;
 
 @Data
-public class ChatGPTAskReq {
+public class ChatGPTAskRes {
 
-    private String model;
-    private List<Message> messages;
+    private List<ChoiceVO> choices;
 
 }

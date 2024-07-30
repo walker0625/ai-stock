@@ -1,109 +1,130 @@
-package kr.walker.todaystock.moduleapi.webClient;
+package com.walker.aistock.domain.common.service;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import kr.lifesemantics.canofymd.moduleapi.domain.sc.diagnose.dto.req.DiagnoseAiReq;
-import kr.lifesemantics.canofymd.moduleapi.domain.sc.diagnose.dto.res.DiagnoseAiRes;
-import kr.walker.todaystock.moduleapi.webClient.dto.req.PredictionHolderReq;
-import kr.walker.todaystock.moduleapi.webClient.dto.res.PredictionCheckRes;
-import kr.walker.todaystock.moduleapi.webClient.dto.res.PredictionRes;
+import com.walker.aistock.domain.ai.dto.req.ChatGPTAskReq;
+import com.walker.aistock.domain.ai.dto.req.ChatGPTImageReq;
+import com.walker.aistock.domain.ai.dto.req.ChatGPTSpeechReq;
+import com.walker.aistock.domain.ai.dto.res.ChatGPTAskRes;
+import com.walker.aistock.domain.ai.dto.res.ChatGPTImageRes;
+import com.walker.aistock.domain.data.dto.req.StockNewsReq;
+import com.walker.aistock.domain.data.dto.req.StockRecommendReq;
+import com.walker.aistock.domain.data.dto.res.FearGreedRes;
+import com.walker.aistock.domain.data.dto.res.StockNewsRes;
+import com.walker.aistock.domain.data.dto.res.StockRecommendRes;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.core.io.ByteArrayResource;
-import org.springframework.http.MediaType;
-import org.springframework.http.client.MultipartBodyBuilder;
+import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.client.WebClient;
-import reactor.core.publisher.Mono;
 
+import java.util.List;
+
+import static com.walker.aistock.domain.common.enums.HeaderKey.*;
+import static com.walker.aistock.domain.common.enums.HeaderKey.AUTHORIZATION;
+import static com.walker.aistock.domain.common.enums.Url.*;
+import static com.walker.aistock.domain.common.enums.Url.RAPID_FEARGREED;
+
+@Slf4j
 @Component
 @RequiredArgsConstructor
-@Slf4j
 public class WebClientService {
 
+    @Value("${rapid.feargreed.token}")
+    private String RAPID_FEARGREED_TOKEN;
+
+    @Value("${finnhub.token}")
+    private String FINNHUB_TOKEN;
+
+    @Value("${chatgpt.token}")
+    private String CHATGPT_TOKEN;
+
     private final WebClient webClient;
+    private final ObjectMapper objectMapper;
 
-    @Value("${bpai.prediction.server.url}")
-   	private String PREDICTION_SERVER_URL;
+    public FearGreedRes fearGreed() {
+        return webClient.get()
+                .uri(RAPID_FEARGREED.getValue())
+                .header(RAPID.getValue(), RAPID_FEARGREED_TOKEN)
+                .retrieve()
+                .bodyToMono(FearGreedRes.class)
+                .block();
+    }
 
-    @Value("${scai.diagnose.api.url}")
-    private String SCAI_DIAGNOSE_API_URL;
+    public List<StockNewsRes> stockNews(StockNewsReq stockNewsReq) {
+        return webClient.get()
+                        .uri(stockNewsReq.getStockNewsUrlWithParam())
+                        .header(FINNHUB.getValue(), FINNHUB_TOKEN)
+                        .retrieve()
+                        .bodyToMono(new ParameterizedTypeReference<List<StockNewsRes>>() {})
+                        .block();
+    }
 
-   	@Value("${spring.profiles.active:}")
-   	private String ACTIVE_PROFILES;
+    public List<StockRecommendRes> stockRecommendation(StockRecommendReq stockRecommendReq) {
+        return webClient.get()
+                        .uri(stockRecommendReq.getStockRecommendUrlWithParam())
+                        .header(FINNHUB.getValue(), FINNHUB_TOKEN)
+                        .retrieve()
+                        .bodyToMono(new ParameterizedTypeReference<List<StockRecommendRes>>() {})
+                        .block();
+    }
 
-    @Autowired
-    private ObjectMapper objectMapper;
-
-    public Mono<PredictionRes> predict(PredictionHolderReq predictionReq) {
+    public ChatGPTAskRes chatGPTAsk(ChatGPTAskReq chatGPTAskReq) {
 
         String body;
 
         try {
-            body = objectMapper.writeValueAsString(predictionReq);
+            body = objectMapper.writeValueAsString(chatGPTAskReq);
         } catch (JsonProcessingException e) {
             throw new RuntimeException(e);
         }
 
-        Mono<PredictionRes> predictionResMono = webClient
-                .post()
-                .uri(PREDICTION_SERVER_URL + "prediction/bloodpressure")
+        return webClient.post()
+                .uri(CHATGPT_ASK.getValue())
                 .bodyValue(body)
+                .header(AUTHORIZATION.getValue(), CHATGPT_TOKEN)
                 .retrieve()
-                .bodyToMono(PredictionRes.class);
-
-
-        return predictionResMono;
-
+                .bodyToMono(new ParameterizedTypeReference<ChatGPTAskRes>() {})
+                .block();
     }
 
-    public Mono<PredictionCheckRes> checkPredictable(PredictionHolderReq predictionReq) {
-//    public Mono<Map> checkPredictable(PredictionHolderReq predictionReq) {
+    public ChatGPTImageRes chatGPTImage(ChatGPTImageReq chatGPTImageReq) {
 
         String body;
 
         try {
-            body = objectMapper.writeValueAsString(predictionReq);
+            body = objectMapper.writeValueAsString(chatGPTImageReq);
         } catch (JsonProcessingException e) {
             throw new RuntimeException(e);
         }
 
-
-        return webClient
-                .post()
-                .uri(PREDICTION_SERVER_URL + "resource/bloodpressure/check")
+        return webClient.post()
+                .uri(CHATGPT_IMAGE.getValue())
                 .bodyValue(body)
+                .header(AUTHORIZATION.getValue(), CHATGPT_TOKEN)
                 .retrieve()
-                .bodyToMono(PredictionCheckRes.class);
-//                .bodyToMono(Map.class);
-
+                .bodyToMono(new ParameterizedTypeReference<ChatGPTImageRes>() {})
+                .block();
     }
 
-    public Mono<DiagnoseAiRes> diagnose(DiagnoseAiReq diagnoseAiReq){
+    public byte[] chatGPTSpeech(ChatGPTSpeechReq chatGPTSpeechReq) {
 
-        MultipartBodyBuilder builder = new MultipartBodyBuilder();
+        String body;
+
         try {
-            builder.part("file", new ByteArrayResource(diagnoseAiReq.getFile().getBytes()) {
-                @Override
-                public String getFilename() {
-                    return diagnoseAiReq.getFile().getOriginalFilename();
-                }
-            });
-        }catch (Exception e) {
-            log.info("e {}", e);
+            body = objectMapper.writeValueAsString(chatGPTSpeechReq);
+        } catch (JsonProcessingException e) {
+            throw new RuntimeException(e);
         }
 
-        builder.part("lesionsite", diagnoseAiReq.getLesionSite());
-
-        return webClient.mutate()
-                .build()
-                .post()
-                .uri(SCAI_DIAGNOSE_API_URL)
-                .contentType(MediaType.MULTIPART_FORM_DATA)
-                .bodyValue(builder.build())
-                .retrieve().bodyToMono(DiagnoseAiRes.class);
+        return webClient.post()
+                .uri(CHATGPT_SPEECH.getValue())
+                .bodyValue(body)
+                .header(AUTHORIZATION.getValue(), CHATGPT_TOKEN)
+                .retrieve()
+                .bodyToMono(byte[].class)
+                .block();
     }
 
 }

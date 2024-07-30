@@ -5,10 +5,10 @@ import lombok.Data;
 
 @Data
 @AllArgsConstructor
-public class StockPromptData {
+public class StockPromptDataVO {
 
-    private QuantitativeInfo quantitativeInfo;
-    private QualitativeInfo qualitativeInfo;
+    private QuantitativeInfoVO quantitativeInfo;
+    private QualitativeInfoVO qualitativeInfo;
 
     public String makePromptString() {
         return quantitativeInfo.toString() + qualitativeInfo.toString();

@@ -1,4 +1,4 @@
-package com.walker.aistock.domain.data.enums;
+package com.walker.aistock.domain.common.enums;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -17,6 +17,6 @@ public enum FinancialMetrics {
     NOW_PRICE("Current stock price"),
     ;
 
-    private String attr;
+    private final String attr;
 
 }

@@ -1,4 +1,4 @@
-package com.walker.aistock.domain.data.enums;
+package com.walker.aistock.domain.common.enums;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -7,14 +7,17 @@ import lombok.Getter;
 @AllArgsConstructor
 public enum Url {
 
-    FINVIZ_STOCK_DETAIL("https://finviz.com/quote.ashx?p=d&t="),
-    FINNHUB_STOCK_NEWS("https://finnhub.io/api/v1/company-news?symbol=%s&from=%s&to=%s"),
-    FINNHUB_STOCK_RECOMMEND("https://finnhub.io/api/v1/stock/recommendation?symbol=%s"),
+    FINVIZ_DETAIL("https://finviz.com/quote.ashx?p=d&t=%s"),
+
+    RAPID_FEARGREED("https://fear-and-greed-index2.p.rapidapi.com/index"),
+
+    FINNHUB_NEWS("https://finnhub.io/api/v1/company-news?symbol=%s&from=%s&to=%s"),
+    FINNHUB_RECOMMEND("https://finnhub.io/api/v1/stock/recommendation?symbol=%s"),
 
     CHATGPT_ASK("https://api.openai.com/v1/chat/completions"),
     CHATGPT_IMAGE("https://api.openai.com/v1/images/generations"),
     CHATGPT_SPEECH("https://api.openai.com/v1/audio/speech");
 
-    private String url;
+    private final String value;
 
 }

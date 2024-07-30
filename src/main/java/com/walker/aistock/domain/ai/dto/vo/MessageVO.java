@@ -4,12 +4,12 @@ import com.walker.aistock.domain.common.enums.AskRole;
 import lombok.Data;
 
 @Data
-public class Message {
+public class MessageVO {
 
     private AskRole role;
     private String content;
 
-    public Message(AskRole role, String content) {
+    public MessageVO(AskRole role, String content) {
         this.role = role;
         this.content = content;
     }

@@ -1,4 +1,4 @@
-package kr.walker.todaystock.moduleapi.global.config;
+package com.walker.aistock.domain.config;
 
 import io.netty.channel.ChannelOption;
 import io.netty.handler.timeout.ReadTimeoutHandler;
@@ -13,6 +13,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.client.reactive.ReactorClientHttpConnector;
 import org.springframework.web.reactive.function.client.ExchangeFilterFunction;
+import org.springframework.web.reactive.function.client.ExchangeStrategies;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Mono;
 import reactor.netty.http.client.HttpClient;
@@ -36,13 +37,21 @@ public class WebClientConfig {
 				.option(ChannelOption.CONNECT_TIMEOUT_MILLIS, 10000)
 				.responseTimeout(Duration.ofMillis(10000))
 				.doOnConnected(conn -> conn.addHandlerLast(new ReadTimeoutHandler(10000, TimeUnit.MILLISECONDS))
-						.addHandlerLast(new WriteTimeoutHandler(10000, TimeUnit.MILLISECONDS)));
+										   .addHandlerLast(new WriteTimeoutHandler(10000, TimeUnit.MILLISECONDS)));
 
 		return WebClient.builder()
 				.defaultHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
 				.defaultHeader(HttpHeaders.ACCEPT, MediaType.ALL_VALUE)
-				.filter(errorHandler())
 				.clientConnector(new ReactorClientHttpConnector(httpClient))
+				.exchangeStrategies(
+					ExchangeStrategies.builder()
+					.codecs(configurer -> configurer.defaultCodecs().maxInMemorySize(5 * 1024 * 1024)) // 5MB(받아오는 이미지 크기(base64) 제한)
+					.build()
+				)
+				.clientConnector(new ReactorClientHttpConnector(
+						HttpClient.create().responseTimeout(Duration.ofMinutes(3))
+				))
+				.filter(errorHandler())
 				.build();
 	}
 

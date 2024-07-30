@@ -9,7 +9,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 @Data
-public class QuantitativeInfo {
+public class QuantitativeInfoVO {
 
     private String ticker;
 
@@ -40,8 +40,8 @@ public class QuantitativeInfo {
     private int sell;
     private int strongSell;
 
-    public QuantitativeInfo(String ticker, FearGreedRes fearGreedRes, FinvizDetailRes finvizDetailRes,
-                            List<StockRecommendRes> stockRecommendRes) {
+    public QuantitativeInfoVO(String ticker, FearGreedRes fearGreedRes, FinvizDetailRes finvizDetailRes,
+                              List<StockRecommendRes> stockRecommendRes) {
         this.ticker = ticker;
 
         this.fearAndGreedIndex = fearGreedRes.getScore();

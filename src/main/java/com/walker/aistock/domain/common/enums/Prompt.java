@@ -4,8 +4,8 @@ import com.fasterxml.jackson.annotation.JsonValue;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
-import static com.walker.aistock.domain.common.enums.Tag.QUANTITATIVE_DATA;
-import static com.walker.aistock.domain.common.enums.Tag.STOCK_NEWS;
+import static com.walker.aistock.domain.common.enums.PromptTag.QUANTITATIVE_DATA;
+import static com.walker.aistock.domain.common.enums.PromptTag.STOCK_NEWS;
 
 @Getter
 @AllArgsConstructor

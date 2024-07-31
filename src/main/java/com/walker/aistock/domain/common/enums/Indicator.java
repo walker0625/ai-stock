@@ -5,7 +5,7 @@ import lombok.Getter;
 
 @Getter
 @AllArgsConstructor
-public enum FinancialMetrics {
+public enum Indicator {
 
     PER("Price-to-Earnings (ttm)"),
     FORWARD_PER("Forward Price-to-Earnings (next fiscal year)"),

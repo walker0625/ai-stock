@@ -3,7 +3,7 @@ package com.walker.aistock.domain.ai.service;
 import com.walker.aistock.domain.ai.dto.req.ChatGPTAskReq;
 import com.walker.aistock.domain.ai.dto.req.ChatGPTImageReq;
 import com.walker.aistock.domain.ai.dto.req.ChatGPTSpeechReq;
-import com.walker.aistock.domain.ai.dto.vo.MessageVO;
+import com.walker.aistock.domain.ai.vo.MessageVO;
 import com.walker.aistock.domain.common.enums.AskModel;
 import com.walker.aistock.domain.common.enums.AskRole;
 import com.walker.aistock.domain.common.service.FileService;

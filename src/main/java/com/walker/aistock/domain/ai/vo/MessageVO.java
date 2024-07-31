@@ -1,4 +1,4 @@
-package com.walker.aistock.domain.ai.dto.vo;
+package com.walker.aistock.domain.ai.vo;
 
 import com.walker.aistock.domain.common.enums.AskRole;
 import lombok.Data;

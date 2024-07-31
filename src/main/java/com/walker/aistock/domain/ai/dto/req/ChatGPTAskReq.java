@@ -1,6 +1,6 @@
 package com.walker.aistock.domain.ai.dto.req;
 
-import com.walker.aistock.domain.ai.dto.vo.MessageVO;
+import com.walker.aistock.domain.ai.vo.MessageVO;
 import com.walker.aistock.domain.common.enums.AskModel;
 import lombok.AllArgsConstructor;
 import lombok.Data;

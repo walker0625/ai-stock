@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 
-import static com.walker.aistock.domain.common.enums.FinancialMetrics.*;
+import static com.walker.aistock.domain.common.enums.Indicator.*;
 import static com.walker.aistock.domain.common.enums.Url.FINVIZ_DETAIL;
 
 @Service

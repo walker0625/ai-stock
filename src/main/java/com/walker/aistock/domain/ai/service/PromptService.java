@@ -4,8 +4,8 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.walker.aistock.domain.ai.dto.req.ChatGPTAskReq;
 import com.walker.aistock.domain.ai.dto.req.ChatGPTImageReq;
-import com.walker.aistock.domain.ai.dto.vo.MessageVO;
-import com.walker.aistock.domain.ai.dto.vo.QuantitativeDataVO;
+import com.walker.aistock.domain.ai.vo.MessageVO;
+import com.walker.aistock.domain.ai.vo.QuantitativeDataVO;
 import com.walker.aistock.domain.common.enums.AskRole;
 import com.walker.aistock.domain.data.dto.res.FearGreedRes;
 import com.walker.aistock.domain.data.dto.res.FinvizDetailRes;
@@ -17,8 +17,8 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 import static com.walker.aistock.domain.common.enums.Prompt.*;
-import static com.walker.aistock.domain.common.enums.Tag.QUANTITATIVE_DATA;
-import static com.walker.aistock.domain.common.enums.Tag.STOCK_NEWS;
+import static com.walker.aistock.domain.common.enums.PromptTag.QUANTITATIVE_DATA;
+import static com.walker.aistock.domain.common.enums.PromptTag.STOCK_NEWS;
 
 @Service
 @RequiredArgsConstructor

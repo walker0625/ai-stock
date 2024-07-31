@@ -6,7 +6,7 @@ import lombok.Getter;
 
 @Getter
 @AllArgsConstructor
-public enum Voice {
+public enum SpeechVoice {
 
     ALLOY("alloy"),
     ECHO("echo"), // 남 추천

@@ -5,7 +5,7 @@ import lombok.Getter;
 
 @Getter
 @AllArgsConstructor
-public enum Path {
+public enum FilePath {
 
     // PATH/ID.FILETYPE
     IMAGE_PATH("/Users/minwoojeon/J/AI-STOCK/IMAGE/%s.%s"),

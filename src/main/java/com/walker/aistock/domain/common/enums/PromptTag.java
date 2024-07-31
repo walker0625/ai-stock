@@ -1,12 +1,11 @@
 package com.walker.aistock.domain.common.enums;
 
-import com.fasterxml.jackson.annotation.JsonValue;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 @Getter
 @AllArgsConstructor
-public enum Tag {
+public enum PromptTag {
 
     QUANTITATIVE_DATA("<quantitativeData>", "</quantitativeData>"),
     STOCK_NEWS("<stockNews>", "</stockNews>")

@@ -8,6 +8,10 @@ public class StockNewsRes {
 
     private String headline;
     private String summary;
+
+    @JsonIgnore
+    private String image;
+
     @JsonIgnore
     private String url;
 

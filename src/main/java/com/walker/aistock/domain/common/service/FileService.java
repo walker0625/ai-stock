@@ -1,7 +1,5 @@
 package com.walker.aistock.domain.common.service;
 
-import com.walker.aistock.domain.common.enums.FileType;
-import com.walker.aistock.domain.common.enums.Path;
 import org.springframework.stereotype.Service;
 
 import java.io.FileNotFoundException;
@@ -11,8 +9,8 @@ import java.util.Base64;
 import java.util.UUID;
 
 import static com.walker.aistock.domain.common.enums.FileType.*;
-import static com.walker.aistock.domain.common.enums.Path.IMAGE_PATH;
-import static com.walker.aistock.domain.common.enums.Path.SPEECH_PATH;
+import static com.walker.aistock.domain.common.enums.FilePath.IMAGE_PATH;
+import static com.walker.aistock.domain.common.enums.FilePath.SPEECH_PATH;
 
 @Service
 public class FileService {

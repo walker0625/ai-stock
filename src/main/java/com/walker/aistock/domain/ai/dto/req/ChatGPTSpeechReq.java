@@ -18,4 +18,8 @@ public class ChatGPTSpeechReq {
     @JsonProperty("response_format")
     SpeechResponseFormat speechResponseFormat = SpeechResponseFormat.OPUS;
 
+    public ChatGPTSpeechReq(String input) {
+        this.input = input;
+    }
+
 }

@@ -70,7 +70,7 @@ public class WebClientService {
                         .block();
     }
 
-    public ChatGPTAskRes chatGPTAsk(ChatGPTAskReq chatGPTAskReq) {
+    public String chatGPTAsk(ChatGPTAskReq chatGPTAskReq) {
 
         String body;
 
@@ -86,7 +86,9 @@ public class WebClientService {
                 .header(AUTHORIZATION.getValue(), CHATGPT_TOKEN)
                 .retrieve()
                 .bodyToMono(new ParameterizedTypeReference<ChatGPTAskRes>() {})
-                .block();
+                .block()
+                // TODO 해당 부분이 계속 반복되어 공통화(응답은 1개라 문제가 없긴하나 WebClient 로직에 있는 것은 어색하여 리팩토링 요망)
+                .getChoices().getFirst().getMessage().getContent();
     }
 
     public ChatGPTImageRes chatGPTImage(ChatGPTImageReq chatGPTImageReq) {

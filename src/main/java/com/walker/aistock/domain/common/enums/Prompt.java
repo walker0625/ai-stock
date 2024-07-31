@@ -16,11 +16,12 @@ public enum Prompt {
                   " You also a capable investor with a 100 percent yield every year</role> "),
     TRANSLATOR(" <role>You are an expert who has translated English into Korea " +
                      " I have experience with writing a broadcast script, so I can translate it to make it easier to listen to when I voice it</role> "),
+    ARTIST("<role>You are a witty and creative artist. You are professional investor who is well versed in American stocks.</role>"),
 
     // context
-    GUIDE(" <guide>Please take your time and respond slowly to future responses through sequential logical processes. " +
-                " If there's any inaccurate or unknown information, it's better to just say you don't know. " +
-                " Please explain it as long and detailed as possible. All responses should be in Korean</guide> "),
+    TEXT_GUIDE(" <textGuide>Please take your time and respond slowly to future responses through sequential logical processes. " +
+                     " If there's any inaccurate or unknown information, it's better to just say you don't know. " +
+                     " Please explain it as long and detailed as possible. All responses should be in Korean</textGuide> "),
 
     // ask
     TICKER(" <tickerQuestion>What Are U.S. Stock Tickers For %s? Just answer the ticker</tickerQuestion> "),
@@ -28,7 +29,8 @@ public enum Prompt {
                          " by combining the industry situation/relationships with other companies/world situations. " +
                          " Additionally, please provide a short/medium/long term outlook for the stock and tell us your investment strategy accordingly</stockQuestion> "),
     NEWS_TRANSLATE(" <newsTranslate>Make a script and translate " + STOCK_NEWS.getStart() +
-                         " into Korean as if the announcer were news</newsTranslate> ")
+                         " into Korean as if the announcer were news</newsTranslate> "),
+    IMAGE_DRAW("<imageDraw>Based on the contents of " + STOCK_NEWS.getStart() + ", please express the situation of the stock in a cute and witty character.</imageDraw>")
     ;
 
     private final String value;

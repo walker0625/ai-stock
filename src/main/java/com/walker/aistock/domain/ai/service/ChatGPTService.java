@@ -1,13 +1,17 @@
 package com.walker.aistock.domain.ai.service;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.walker.aistock.domain.ai.dto.req.ChatGPTAskReq;
 import com.walker.aistock.domain.ai.dto.req.ChatGPTImageReq;
 import com.walker.aistock.domain.ai.dto.req.ChatGPTSpeechReq;
 import com.walker.aistock.domain.ai.dto.res.ChatGPTAskRes;
 import com.walker.aistock.domain.ai.dto.vo.MessageVO;
-import com.walker.aistock.domain.ai.dto.vo.QuantitativeInfoVO;
+import com.walker.aistock.domain.ai.dto.vo.QuantitativeDataVO;
 import com.walker.aistock.domain.ai.vo.ImageData;
+import com.walker.aistock.domain.common.enums.AskModel;
 import com.walker.aistock.domain.common.enums.AskRole;
+import com.walker.aistock.domain.common.enums.Tag;
 import com.walker.aistock.domain.common.service.FileService;
 import com.walker.aistock.domain.common.service.WebClientService;
 import com.walker.aistock.domain.data.dto.req.StockNewsReq;
@@ -28,6 +32,8 @@ import java.util.List;
 import static com.walker.aistock.domain.common.enums.Prompt.*;
 import static com.walker.aistock.domain.common.enums.Prompt.ANALYST;
 import static com.walker.aistock.domain.common.enums.Prompt.STOCK_QUESTION;
+import static com.walker.aistock.domain.common.enums.Tag.QUANTITATIVE_DATA;
+import static com.walker.aistock.domain.common.enums.Tag.STOCK_NEWS;
 import static java.time.LocalDate.now;
 
 @Slf4j
@@ -42,6 +48,8 @@ public class ChatGPTService {
     private final FileService fileService;
     private final WebClientService webClientService;
 
+    private final ObjectMapper objectMapper;
+
     public String chatGPTReport(String keyword, String ticker) {
 
         if(ticker == null || ticker.equals("")) {
@@ -51,6 +59,7 @@ public class ChatGPTService {
         FearGreedRes fearGreedRes = fearGreedService.fearGreed();
         FinvizDetailRes finvizDetailRes = finvizService.scrapingFinviz(ticker);
         List<StockRecommendRes> stockRecommendRes = finnhubService.stockRecommend(new StockRecommendReq(ticker));
+        // TODO news에 대한 데이터는 좀 더 세부적인 내용이 있는 Source 찾아서 대체 요망
         List<StockNewsRes> stockNewsRes = finnhubService.stockNews(new StockNewsReq(ticker, now().minusDays(2).toString(), now().toString()));
 
         // TODO Response들로 ask와 image용 프롬프트 생성하여 요청 후, ask 응답은 speech로 변환(각 단계의 data db 저장)
@@ -60,15 +69,13 @@ public class ChatGPTService {
         String newses = webClientService.chatGPTAsk(makePromptForNewsTranslate(stockNewsRes))
                                         .getChoices().getFirst().getMessage().getContent();
 
-
-
         return stockAnalysis + newses;
     }
 
     public String chatGPTSearchByKeyword(String keyword) {
 
         ChatGPTAskRes chatGPTAskRes = webClientService.chatGPTAsk(
-            new ChatGPTAskReq(List.of(new MessageVO(AskRole.USER, String.format(TICKER.getValue(), keyword))))
+            new ChatGPTAskReq(AskModel.GPT3_TURBO, List.of(new MessageVO(AskRole.USER, String.format(TICKER.getValue(), keyword))))
         );
 
         return chatGPTAskRes.getChoices().get(0).getMessage().getContent();
@@ -77,9 +84,17 @@ public class ChatGPTService {
     private ChatGPTAskReq makePromptForStockAnalysis(String ticker, FearGreedRes fearGreedRes, FinvizDetailRes finvizDetailRes,
                                                      List<StockRecommendRes> stockRecommendRes) {
 
+        String quantitativeData = null;
+
+        try {
+            quantitativeData = objectMapper.writeValueAsString(new QuantitativeDataVO(ticker, fearGreedRes, finvizDetailRes, stockRecommendRes));
+        } catch (JsonProcessingException e) {
+            throw new RuntimeException(e);
+        }
+
         String stockAsk =
                 GUIDE.getValue() +
-                new QuantitativeInfoVO(ticker, fearGreedRes, finvizDetailRes, stockRecommendRes) +
+                QUANTITATIVE_DATA.getStart() + quantitativeData + QUANTITATIVE_DATA.getEnd() +
                 STOCK_QUESTION.getValue()
                 ;
 
@@ -89,9 +104,17 @@ public class ChatGPTService {
 
     private ChatGPTAskReq makePromptForNewsTranslate(List<StockNewsRes> stockNewsRes) {
 
+        String stockNewses = null;
+
+        try {
+            stockNewses = objectMapper.writeValueAsString(stockNewsRes);
+        } catch (JsonProcessingException e) {
+            throw new RuntimeException(e);
+        }
+
         String newses =
                 GUIDE.getValue() +
-                stockNewsRes.toString() +
+                STOCK_NEWS.getStart() + stockNewses + STOCK_NEWS.getEnd() +
                 NEWS_TRANSLATE.getValue()
                 ;
 
@@ -110,4 +133,7 @@ public class ChatGPTService {
         return fileService.saveSpeechAudio(webClientService.chatGPTSpeech(chatGPTSpeechReq));
     }
 
+    public String chatGPTText(ChatGPTAskReq chatGPTAskReq) {
+        return webClientService.chatGPTAsk(chatGPTAskReq).getChoices().get(0).getMessage().getContent();
+    }
 }

@@ -4,6 +4,9 @@ import com.fasterxml.jackson.annotation.JsonValue;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
+import static com.walker.aistock.domain.common.enums.Tag.QUANTITATIVE_DATA;
+import static com.walker.aistock.domain.common.enums.Tag.STOCK_NEWS;
+
 @Getter
 @AllArgsConstructor
 public enum Prompt {
@@ -21,11 +24,11 @@ public enum Prompt {
 
     // ask
     TICKER(" <tickerQuestion>What Are U.S. Stock Tickers For %s? Just answer the ticker</tickerQuestion> "),
-    STOCK_QUESTION(" <stockQuestion>Please analyze the quantitative data I provided and compile an insightful report on the business " +
+    STOCK_QUESTION(" <stockQuestion>Please analyze " + QUANTITATIVE_DATA.getStart() + " I provided and compile an insightful report on the business " +
                          " by combining the industry situation/relationships with other companies/world situations. " +
                          " Additionally, please provide a short/medium/long term outlook for the stock and tell us your investment strategy accordingly</stockQuestion> "),
-    NEWS_TRANSLATE(" <newsTranslate>Make a script and translate the news data in the headline: summary format provided above " +
-                         " into Korean as if the announcer were news</<newsTranslate> ")
+    NEWS_TRANSLATE(" <newsTranslate>Make a script and translate " + STOCK_NEWS.getStart() +
+                         " into Korean as if the announcer were news</newsTranslate> ")
     ;
 
     private final String value;

@@ -1,5 +1,6 @@
 package com.walker.aistock.domain.ai.controller;
 
+import com.walker.aistock.domain.ai.dto.req.ChatGPTAskReq;
 import com.walker.aistock.domain.ai.dto.req.ChatGPTImageReq;
 import com.walker.aistock.domain.ai.dto.req.ChatGPTSpeechReq;
 import com.walker.aistock.domain.ai.service.ChatGPTService;
@@ -28,6 +29,11 @@ public class ChatGPTController {
     @PostMapping("/speech")
     public String chatGPTSpeech(@RequestBody ChatGPTSpeechReq chatGPTSpeechReq) {
         return chatGPTService.chatGPTSpeech(chatGPTSpeechReq);
+    }
+
+    @PostMapping("/text")
+    public String chatGPTReport(@RequestBody ChatGPTAskReq chatGPTAskReq) {
+        return chatGPTService.chatGPTText(chatGPTAskReq);
     }
 
 }

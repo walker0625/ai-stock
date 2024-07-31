@@ -9,7 +9,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 @Data
-public class QuantitativeInfoVO {
+public class QuantitativeDataVO {
 
     private String ticker;
 
@@ -40,7 +40,7 @@ public class QuantitativeInfoVO {
     private int sell;
     private int strongSell;
 
-    public QuantitativeInfoVO(String ticker, FearGreedRes fearGreedRes, FinvizDetailRes finvizDetailRes,
+    public QuantitativeDataVO(String ticker, FearGreedRes fearGreedRes, FinvizDetailRes finvizDetailRes,
                               List<StockRecommendRes> stockRecommendRes) {
         this.ticker = ticker;
 

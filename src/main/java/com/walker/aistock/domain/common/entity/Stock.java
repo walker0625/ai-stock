@@ -8,10 +8,7 @@ import com.walker.aistock.domain.data.entity.Indicator;
 import com.walker.aistock.domain.data.entity.News;
 import com.walker.aistock.domain.data.entity.Recommend;
 import jakarta.persistence.*;
-import lombok.AccessLevel;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
+import lombok.*;
 import lombok.experimental.FieldDefaults;
 import org.hibernate.annotations.Comment;
 import org.hibernate.annotations.DynamicUpdate;
@@ -33,9 +30,6 @@ public class Stock extends BaseTime {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Comment("아이디")
     Long id;
-
-    @Comment("이름")
-    String name;
 
     @Comment("기호")
     String ticker;
@@ -60,5 +54,24 @@ public class Stock extends BaseTime {
 
     @OneToMany(mappedBy = "stock")
     List<TodayImage> todayImageList = new ArrayList<>();
+
+    @Builder
+    public Stock(Long id, String ticker, List<Indicator> indicatorList, List<Recommend> recommendList,
+                 List<News> newsList, List<Report> reportList, List<NewsBriefing> newsBriefingList,
+                 List<Speech> speechList, List<TodayImage> todayImageList) {
+        this.id = id;
+        this.ticker = ticker;
+        this.indicatorList = indicatorList;
+        this.recommendList = recommendList;
+        this.newsList = newsList;
+        this.reportList = reportList;
+        this.newsBriefingList = newsBriefingList;
+        this.speechList = speechList;
+        this.todayImageList = todayImageList;
+    }
+
+    public Stock(String ticker) {
+        this.ticker = ticker;
+    }
 
 }

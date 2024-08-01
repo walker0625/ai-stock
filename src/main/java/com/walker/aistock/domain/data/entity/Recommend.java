@@ -2,8 +2,11 @@ package com.walker.aistock.domain.data.entity;
 
 import com.walker.aistock.domain.common.entity.BaseTime;
 import com.walker.aistock.domain.common.entity.Stock;
+import com.walker.aistock.domain.data.dto.req.StockRecommendReq;
+import com.walker.aistock.domain.data.dto.res.StockRecommendRes;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.experimental.FieldDefaults;
@@ -47,5 +50,37 @@ public class Recommend extends BaseTime {
     @JoinColumn(name = "stock_id")
     @Comment("주식 아이디")
     Stock stock;
+
+    @Builder
+    public Recommend(Long id, int strongBuy, int buy, int hold, int sell, int strongSell, String recommendDate, Stock stock) {
+        this.id = id;
+        this.strongBuy = strongBuy;
+        this.buy = buy;
+        this.hold = hold;
+        this.sell = sell;
+        this.strongSell = strongSell;
+        this.recommendDate = recommendDate;
+        this.stock = stock;
+    }
+
+    public static Recommend create(StockRecommendRes stockRecommendRes, Stock stock) {
+        return Recommend.builder()
+                    .strongBuy(stockRecommendRes.getStrongBuy())
+                    .buy(stockRecommendRes.getBuy())
+                    .hold(stockRecommendRes.getHold())
+                    .sell(stockRecommendRes.getSell())
+                    .strongSell(stockRecommendRes.getStrongSell())
+                    .recommendDate(stockRecommendRes.getPeriod())
+                    .stock(stock)
+                .build();
+    }
+
+    public void modify(StockRecommendRes stockRecommendRes) {
+        this.strongBuy = stockRecommendRes.getStrongBuy();
+        this.buy = stockRecommendRes.getBuy();
+        this.hold = stockRecommendRes.getHold();
+        this.sell = stockRecommendRes.getSell();
+        this.strongSell = stockRecommendRes.getStrongSell();
+    }
 
 }

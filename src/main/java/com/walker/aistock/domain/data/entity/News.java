@@ -3,8 +3,10 @@ package com.walker.aistock.domain.data.entity;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.walker.aistock.domain.common.entity.BaseTime;
 import com.walker.aistock.domain.common.entity.Stock;
+import com.walker.aistock.domain.data.dto.res.StockNewsRes;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.experimental.FieldDefaults;
@@ -29,7 +31,9 @@ public class News extends BaseTime {
     @Comment("제목")
     String headline;
 
+    @Lob
     @Comment("요약")
+    @Column(columnDefinition = "TEXT")
     String summary;
 
     @Comment("이미지 url")
@@ -42,5 +46,25 @@ public class News extends BaseTime {
     @JoinColumn(name = "stock_id")
     @Comment("주식 아이디")
     Stock stock;
+
+    @Builder
+    public News(Long id, String headline, String summary, String image, String url, Stock stock) {
+        this.id = id;
+        this.headline = headline;
+        this.summary = summary;
+        this.image = image;
+        this.url = url;
+        this.stock = stock;
+    }
+
+    public static News create(StockNewsRes stockNewsRes, Stock stock) {
+        return News.builder()
+                    .headline(stockNewsRes.getHeadline())
+                    .summary(stockNewsRes.getSummary())
+                    .image(stockNewsRes.getImage())
+                    .url(stockNewsRes.getUrl())
+                    .stock(stock)
+                .build();
+    }
 
 }

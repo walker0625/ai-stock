@@ -1,7 +1,11 @@
 package com.walker.aistock.domain.common.service;
 
+import lombok.AccessLevel;
+import lombok.RequiredArgsConstructor;
+import lombok.experimental.FieldDefaults;
 import org.springframework.stereotype.Service;
 
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -15,36 +19,33 @@ import static com.walker.aistock.domain.common.enums.FilePath.SPEECH_PATH;
 @Service
 public class FileService {
 
-    public String saveBase64Image(String base64) {
+    public void saveBase64Image(String fileKey, String base64) {
 
-        String imageId = UUID.randomUUID().toString();
-        String path = String.format(IMAGE_PATH.getAbsolutePath(), imageId, JPG.getValue());
+        String path = String.format(IMAGE_PATH.getAbsolutePath(), fileKey, JPG.getValue());
         byte[] image = Base64.getDecoder().decode(base64);
 
         saveFile(path, image);
-
-        return imageId;
     }
 
+    public void saveSpeechAudio(String fileKey, byte[] speech) {
 
-    public String saveSpeechAudio(byte[] speech) {
-
-        String speechId = UUID.randomUUID().toString();
-        String path = String.format(SPEECH_PATH.getAbsolutePath(), speechId, OPUS.getValue());
+        String path = String.format(SPEECH_PATH.getAbsolutePath(), fileKey, OPUS.getValue());
 
         saveFile(path, speech);
-
-        return speechId;
     }
 
     public void saveFile(String path, byte[] file) {
         try (FileOutputStream fos = new FileOutputStream(path)) {
             fos.write(file);
-        } catch (FileNotFoundException e) {
-            throw new RuntimeException(e);
         } catch (IOException e) {
+            deleteFile(path);
             throw new RuntimeException(e);
         }
+    }
+
+    private void deleteFile(String path) {
+        File deleteFile = new File(path);
+        deleteFile.delete();
     }
 
 }

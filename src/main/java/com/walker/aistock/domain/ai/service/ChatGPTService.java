@@ -3,10 +3,13 @@ package com.walker.aistock.domain.ai.service;
 import com.walker.aistock.domain.ai.dto.req.ChatGPTAskReq;
 import com.walker.aistock.domain.ai.dto.req.ChatGPTImageReq;
 import com.walker.aistock.domain.ai.dto.req.ChatGPTSpeechReq;
+import com.walker.aistock.domain.ai.dto.res.ChatGPTImageRes;
 import com.walker.aistock.domain.ai.vo.MessageVO;
+import com.walker.aistock.domain.common.entity.Stock;
 import com.walker.aistock.domain.common.enums.AskModel;
 import com.walker.aistock.domain.common.enums.AskRole;
-import com.walker.aistock.domain.common.service.FileService;
+import com.walker.aistock.domain.common.repository.StockRepository;
+import com.walker.aistock.domain.common.service.DataPersistenceService;
 import com.walker.aistock.domain.common.service.WebClientService;
 import com.walker.aistock.domain.data.dto.req.StockNewsReq;
 import com.walker.aistock.domain.data.dto.req.StockRecommendReq;
@@ -17,7 +20,9 @@ import com.walker.aistock.domain.data.dto.res.StockRecommendRes;
 import com.walker.aistock.domain.data.service.FearGreedService;
 import com.walker.aistock.domain.data.service.FinnhubService;
 import com.walker.aistock.domain.data.service.FinvizService;
+import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
+import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
@@ -29,37 +34,52 @@ import static java.time.LocalDate.now;
 @Slf4j
 @Service
 @RequiredArgsConstructor
+@FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class ChatGPTService {
 
-    private final FinvizService finvizService;
-    private final FinnhubService finnhubService;
-    private final FearGreedService fearGreedService;
+    FinvizService finvizService;
+    FinnhubService finnhubService;
+    FearGreedService fearGreedService;
 
-    private final PromptService promptService;
+    PromptService promptService;
 
-    private final FileService fileService;
-    private final WebClientService webClientService;
+    WebClientService webClientService;
+    DataPersistenceService dataPersistenceService;
+
+    StockRepository stockRepository;
 
     public String chatGPTAnalysis(String keyword, String ticker) {
 
-        if(ticker == null || ticker.equals("")) {
+        if (ticker == null || ticker.equals("")) {
             ticker = findTicker(keyword);
+        }
+
+        Stock stock = stockRepository.findByTicker(ticker);
+
+        if (stock == null) {
+            stock = stockRepository.save(new Stock(ticker));
         }
 
         // DATA
         FearGreedRes fearGreedRes = fearGreedService.fearGreed();
         FinvizDetailRes finvizDetailRes = finvizService.scrapingFinviz(ticker);
-        List<StockRecommendRes> stockRecommendRes = finnhubService.stockRecommend(new StockRecommendReq(ticker));
+
+        StockRecommendRes stockRecommendRes = finnhubService.stockRecommend(new StockRecommendReq(ticker));
         // TODO news에 대한 데이터는 좀 더 세부적인 내용이 있는 Source 찾아서 대체 요망
         List<StockNewsRes> stockNewsRes = finnhubService.stockNews(new StockNewsReq(ticker, now().minusDays(2).toString(), now().toString()));
+
+        dataPersistenceService.saveSourceDatas(fearGreedRes, finvizDetailRes, stockRecommendRes, stockNewsRes, stock);
 
         // AI
         String stockReport = webClientService.chatGPTAsk(promptService.makePromptForStockReport(ticker, fearGreedRes, finvizDetailRes, stockRecommendRes));
         String newsBriefing = webClientService.chatGPTAsk(promptService.makePromptForNewsTranslate(stockNewsRes));
-        String imageId = chatGPTImage(promptService.makePromptStockImageDraw(newsBriefing));
-        String speechId = chatGPTSpeech(new ChatGPTSpeechReq(stockReport + newsBriefing));
 
-        // TODO 위에 Data들 DB에 저장 및 관리(image/speech 파일의 저장 경로 수정 요망)
+        dataPersistenceService.saveGeneratedTexts(stockReport, newsBriefing, stock);
+
+        ChatGPTImageRes chatGPTImageRes = chatGPTImage(promptService.makePromptStockImageDraw(newsBriefing));
+        byte[] speechBinary = chatGPTSpeech(new ChatGPTSpeechReq(stockReport + newsBriefing));
+
+        dataPersistenceService.saveGeneratedFiles(chatGPTImageRes, speechBinary, stock);
 
         return stockReport + newsBriefing;
     }
@@ -70,12 +90,12 @@ public class ChatGPTService {
         );
     }
 
-    public String chatGPTImage(ChatGPTImageReq chatGPTImageReq) {
-        return fileService.saveBase64Image(webClientService.chatGPTImage(chatGPTImageReq).getData().getFirst().getBase64());
+    public ChatGPTImageRes chatGPTImage(ChatGPTImageReq chatGPTImageReq) {
+        return webClientService.chatGPTImage(chatGPTImageReq);
     }
 
-    public String chatGPTSpeech(ChatGPTSpeechReq chatGPTSpeechReq) {
-        return fileService.saveSpeechAudio(webClientService.chatGPTSpeech(chatGPTSpeechReq));
+    public byte[] chatGPTSpeech(ChatGPTSpeechReq chatGPTSpeechReq) {
+        return webClientService.chatGPTSpeech(chatGPTSpeechReq);
     }
 
     public String chatGPTText(ChatGPTAskReq chatGPTAskReq) {

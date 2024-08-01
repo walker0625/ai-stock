@@ -2,8 +2,10 @@ package com.walker.aistock.domain.data.entity;
 
 import com.walker.aistock.domain.common.entity.BaseTime;
 import com.walker.aistock.domain.common.entity.Stock;
+import com.walker.aistock.domain.data.dto.res.FinvizDetailRes;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.experimental.FieldDefaults;
@@ -54,5 +56,33 @@ public class Indicator extends BaseTime {
     @JoinColumn(name = "stock_id")
     @Comment("주식 아이디")
     Stock stock;
+
+    @Builder
+    public Indicator(Long id, Double per, Double forwardPer, Double eps, Double forwardEps, Double peg, Double rsi, Double targetPrice, Double nowPrice, Stock stock) {
+        this.id = id;
+        this.per = per;
+        this.forwardPer = forwardPer;
+        this.eps = eps;
+        this.forwardEps = forwardEps;
+        this.peg = peg;
+        this.rsi = rsi;
+        this.targetPrice = targetPrice;
+        this.nowPrice = nowPrice;
+        this.stock = stock;
+    }
+
+    public static Indicator create(FinvizDetailRes finvizDetailRes, Stock stock) {
+        return Indicator.builder()
+                    .per(finvizDetailRes.getPer())
+                    .forwardPer(finvizDetailRes.getFper())
+                    .eps(finvizDetailRes.getEps())
+                    .forwardEps(finvizDetailRes.getFeps())
+                    .peg(finvizDetailRes.getPeg())
+                    .rsi(finvizDetailRes.getRsi())
+                    .targetPrice(finvizDetailRes.getTargetPrice())
+                    .nowPrice(finvizDetailRes.getNowPrice())
+                    .stock(stock)
+            .build();
+    }
 
 }

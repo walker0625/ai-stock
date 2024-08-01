@@ -4,6 +4,7 @@ import com.walker.aistock.domain.common.entity.BaseTime;
 import com.walker.aistock.domain.common.entity.Stock;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.experimental.FieldDefaults;
@@ -32,5 +33,20 @@ public class TodayImage extends BaseTime {
     @JoinColumn(name = "stock_id")
     @Comment("주식 아이디")
     Stock stock;
+
+    @Builder
+    public TodayImage(Long id, String fileKey, Stock stock) {
+        this.id = id;
+        this.fileKey = fileKey;
+        this.stock = stock;
+    }
+
+    public static TodayImage create(String fileKey, Stock stock) {
+        return TodayImage
+                .builder()
+                    .fileKey(fileKey)
+                    .stock(stock)
+                .build();
+    }
 
 }

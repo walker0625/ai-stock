@@ -4,6 +4,7 @@ import com.walker.aistock.domain.common.entity.BaseTime;
 import com.walker.aistock.domain.common.entity.Stock;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.experimental.FieldDefaults;
@@ -25,12 +26,29 @@ public class Report extends BaseTime {
     @Comment("아이디")
     Long id;
 
+    @Lob
     @Comment("내용")
+    @Column(columnDefinition = "TEXT")
     String content;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "stock_id")
     @Comment("주식 아이디")
     Stock stock;
+
+    @Builder
+    public Report(Long id, String content, Stock stock) {
+        this.id = id;
+        this.content = content;
+        this.stock = stock;
+    }
+
+    public static Report create(String content, Stock stock) {
+        return Report
+                .builder()
+                    .content(content)
+                    .stock(stock)
+                .build();
+    }
 
 }

@@ -61,13 +61,14 @@ public class WebClientService {
                         .block();
     }
 
-    public List<StockRecommendRes> stockRecommendation(StockRecommendReq stockRecommendReq) {
+    public StockRecommendRes stockRecommendation(StockRecommendReq stockRecommendReq) {
         return webClient.get()
                         .uri(stockRecommendReq.getStockRecommendUrlWithParam())
                         .header(FINNHUB.getValue(), FINNHUB_TOKEN)
                         .retrieve()
                         .bodyToMono(new ParameterizedTypeReference<List<StockRecommendRes>>() {})
-                        .block();
+                        .block()
+                        .getFirst();
     }
 
     public String chatGPTAsk(ChatGPTAskReq chatGPTAskReq) {

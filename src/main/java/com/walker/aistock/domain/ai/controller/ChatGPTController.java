@@ -3,6 +3,7 @@ package com.walker.aistock.domain.ai.controller;
 import com.walker.aistock.domain.ai.dto.req.ChatGPTAskReq;
 import com.walker.aistock.domain.ai.dto.req.ChatGPTImageReq;
 import com.walker.aistock.domain.ai.dto.req.ChatGPTSpeechReq;
+import com.walker.aistock.domain.ai.dto.res.ChatGPTImageRes;
 import com.walker.aistock.domain.ai.service.ChatGPTService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -22,12 +23,12 @@ public class ChatGPTController {
     }
 
     @PostMapping("/image")
-    public String chatGPTImage(@RequestBody ChatGPTImageReq chatGPTImageReq) {
+    public ChatGPTImageRes chatGPTImage(@RequestBody ChatGPTImageReq chatGPTImageReq) {
         return chatGPTService.chatGPTImage(chatGPTImageReq);
     }
 
     @PostMapping("/speech")
-    public String chatGPTSpeech(@RequestBody ChatGPTSpeechReq chatGPTSpeechReq) {
+    public byte[] chatGPTSpeech(@RequestBody ChatGPTSpeechReq chatGPTSpeechReq) {
         return chatGPTService.chatGPTSpeech(chatGPTSpeechReq);
     }
 

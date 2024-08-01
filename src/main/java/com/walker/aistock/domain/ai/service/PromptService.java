@@ -11,7 +11,9 @@ import com.walker.aistock.domain.data.dto.res.FearGreedRes;
 import com.walker.aistock.domain.data.dto.res.FinvizDetailRes;
 import com.walker.aistock.domain.data.dto.res.StockNewsRes;
 import com.walker.aistock.domain.data.dto.res.StockRecommendRes;
+import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
+import lombok.experimental.FieldDefaults;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -22,12 +24,13 @@ import static com.walker.aistock.domain.common.enums.PromptTag.STOCK_NEWS;
 
 @Service
 @RequiredArgsConstructor
+@FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class PromptService {
 
-    public final ObjectMapper objectMapper;
+    ObjectMapper objectMapper;
 
     public ChatGPTAskReq makePromptForStockReport(String ticker, FearGreedRes fearGreedRes, FinvizDetailRes finvizDetailRes,
-                                                  List<StockRecommendRes> stockRecommendRes) {
+                                                  StockRecommendRes stockRecommendRes) {
 
         String quantitativeData = null;
 

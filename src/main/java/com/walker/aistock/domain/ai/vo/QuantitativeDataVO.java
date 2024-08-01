@@ -40,8 +40,7 @@ public class QuantitativeDataVO {
     private int sell;
     private int strongSell;
 
-    public QuantitativeDataVO(String ticker, FearGreedRes fearGreedRes, FinvizDetailRes finvizDetailRes,
-                              List<StockRecommendRes> stockRecommendRes) {
+    public QuantitativeDataVO(String ticker, FearGreedRes fearGreedRes, FinvizDetailRes finvizDetailRes, StockRecommendRes stockRecommendRes) {
         this.ticker = ticker;
 
         this.fearAndGreedIndex = fearGreedRes.getScore();
@@ -61,13 +60,12 @@ public class QuantitativeDataVO {
         this.targetPrice = finvizDetailRes.getTargetPrice();
         this.nowPrice = finvizDetailRes.getNowPrice();
 
-        StockRecommendRes latestStockRecommend = stockRecommendRes.getFirst();
-        this.recommendDate = latestStockRecommend.getPeriod();
-        this.strongBuy = latestStockRecommend.getStrongBuy();
-        this.buy = latestStockRecommend.getBuy();
-        this.hold = latestStockRecommend.getHold();
-        this.sell = latestStockRecommend.getSell();
-        this.strongSell = latestStockRecommend.getStrongSell();
+        this.recommendDate = stockRecommendRes.getPeriod();
+        this.strongBuy = stockRecommendRes.getStrongBuy();
+        this.buy = stockRecommendRes.getBuy();
+        this.hold = stockRecommendRes.getHold();
+        this.sell = stockRecommendRes.getSell();
+        this.strongSell = stockRecommendRes.getStrongSell();
     }
 
 }

@@ -1,8 +1,10 @@
 package com.walker.aistock.domain.data.entity;
 
 import com.walker.aistock.domain.common.entity.BaseTime;
+import com.walker.aistock.domain.data.dto.res.FearGreedRes;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.experimental.FieldDefaults;
@@ -27,10 +29,10 @@ public class FearGreed extends BaseTime {
     Long id;
 
     @Comment("상태값")
-    String status;
+    String rating;
 
     @Comment("수치")
-    int rate;
+    int score;
 
     @Comment("이전 수치")
     int previous;
@@ -46,5 +48,29 @@ public class FearGreed extends BaseTime {
 
     @Comment("갱신 일시")
     LocalDateTime updateDate;
+
+    @Builder
+    public FearGreed(Long id, String rating, int score, int previous, int previous1Week, int previous1Month, int previous1Year, LocalDateTime updateDate) {
+        this.id = id;
+        this.rating = rating;
+        this.score = score;
+        this.previous = previous;
+        this.previous1Week = previous1Week;
+        this.previous1Month = previous1Month;
+        this.previous1Year = previous1Year;
+        this.updateDate = updateDate;
+    }
+
+    public static FearGreed create(FearGreedRes fearGreedRes) {
+        return FearGreed.builder()
+                    .score(fearGreedRes.getScore())
+                    .rating(fearGreedRes.getRating())
+                    .previous(fearGreedRes.getPreviousClose())
+                    .previous1Week(fearGreedRes.getPrevious1Week())
+                    .previous1Month(fearGreedRes.getPrevious1Month())
+                    .previous1Year(fearGreedRes.getPrevious1Year())
+                    .updateDate(fearGreedRes.getTimestamp())
+                .build();
+    }
 
 }

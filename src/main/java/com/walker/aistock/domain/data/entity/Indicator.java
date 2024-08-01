@@ -1,6 +1,7 @@
 package com.walker.aistock.domain.data.entity;
 
 import com.walker.aistock.domain.common.entity.BaseTime;
+import com.walker.aistock.domain.common.entity.Stock;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -8,6 +9,7 @@ import lombok.NoArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import org.hibernate.annotations.Comment;
 import org.hibernate.annotations.DynamicUpdate;
+import org.hibernate.validator.internal.util.stereotypes.Lazy;
 
 @Entity
 @Getter
@@ -21,7 +23,7 @@ public class Indicator extends BaseTime {
     @Id
     @Column(name = "indicator_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Comment("주식 지표 아이디")
+    @Comment("아이디")
     Long id;
 
     @Comment("주가 수익 비율")
@@ -47,5 +49,10 @@ public class Indicator extends BaseTime {
 
     @Comment("현재 주가")
     private Double nowPrice;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "stock_id")
+    @Comment("주식 아이디")
+    Stock stock;
 
 }

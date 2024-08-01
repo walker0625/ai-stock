@@ -1,6 +1,7 @@
 package com.walker.aistock.domain.ai.entity;
 
 import com.walker.aistock.domain.common.entity.BaseTime;
+import com.walker.aistock.domain.common.entity.Stock;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -15,13 +16,21 @@ import org.hibernate.annotations.DynamicUpdate;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @FieldDefaults(level = AccessLevel.PRIVATE)
 //@ToString(exclude = "")
-@Comment("주식 분석")
-public class Analysis extends BaseTime {
+@Comment("주식 보고서")
+public class Report extends BaseTime {
 
     @Id
-    @Column(name = "analysis_id")
+    @Column(name = "report_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Comment("주식 분석 아이디")
+    @Comment("아이디")
     Long id;
+
+    @Comment("내용")
+    String content;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "stock_id")
+    @Comment("주식 아이디")
+    Stock stock;
 
 }

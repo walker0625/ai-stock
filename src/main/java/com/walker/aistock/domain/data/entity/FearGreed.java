@@ -23,7 +23,7 @@ public class FearGreed extends BaseTime {
     @Id
     @Column(name = "feargreed_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Comment("공탐 지수 아이디")
+    @Comment("아이디")
     Long id;
 
     @Comment("상태값")
@@ -44,7 +44,7 @@ public class FearGreed extends BaseTime {
     @Comment("1년전 수치")
     int previous1Year;
 
-    @Comment("공탐 지수 갱신 일시")
+    @Comment("갱신 일시")
     LocalDateTime updateDate;
 
 }

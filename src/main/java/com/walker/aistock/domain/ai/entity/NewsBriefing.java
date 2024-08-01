@@ -1,6 +1,7 @@
 package com.walker.aistock.domain.ai.entity;
 
 import com.walker.aistock.domain.common.entity.BaseTime;
+import com.walker.aistock.domain.common.entity.Stock;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -21,7 +22,15 @@ public class NewsBriefing extends BaseTime {
     @Id
     @Column(name = "news_briefing_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Comment("주식 뉴스 프리핑 아이디")
+    @Comment("아이디")
     Long id;
+
+    @Comment("원고")
+    String script;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "stock_id")
+    @Comment("주식 아이디")
+    Stock stock;
 
 }

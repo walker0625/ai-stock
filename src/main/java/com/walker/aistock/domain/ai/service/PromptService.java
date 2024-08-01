@@ -26,8 +26,8 @@ public class PromptService {
 
     public final ObjectMapper objectMapper;
 
-    public ChatGPTAskReq makePromptForStockAnalysis(String ticker, FearGreedRes fearGreedRes, FinvizDetailRes finvizDetailRes,
-                                                    List<StockRecommendRes> stockRecommendRes) {
+    public ChatGPTAskReq makePromptForStockReport(String ticker, FearGreedRes fearGreedRes, FinvizDetailRes finvizDetailRes,
+                                                  List<StockRecommendRes> stockRecommendRes) {
 
         String quantitativeData = null;
 

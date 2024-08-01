@@ -1,6 +1,7 @@
 package com.walker.aistock.domain.data.entity;
 
 import com.walker.aistock.domain.common.entity.BaseTime;
+import com.walker.aistock.domain.common.entity.Stock;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -21,7 +22,7 @@ public class Recommend extends BaseTime {
     @Id
     @Column(name = "recommend_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Comment("주식 추천 아이디")
+    @Comment("아이디")
     Long id;
 
     @Comment("적극 매수")
@@ -39,7 +40,12 @@ public class Recommend extends BaseTime {
     @Comment("적극 매도")
     int strongSell;
 
-    @Comment("주식 추천 일자")
+    @Comment("추천 일자")
     String recommendDate;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "stock_id")
+    @Comment("주식 아이디")
+    Stock stock;
 
 }

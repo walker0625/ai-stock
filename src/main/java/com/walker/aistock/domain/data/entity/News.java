@@ -2,6 +2,7 @@ package com.walker.aistock.domain.data.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.walker.aistock.domain.common.entity.BaseTime;
+import com.walker.aistock.domain.common.entity.Stock;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -22,7 +23,7 @@ public class News extends BaseTime {
     @Id
     @Column(name = "news_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Comment("주식 뉴스 아이디")
+    @Comment("아이디")
     Long id;
 
     @Comment("제목")
@@ -36,5 +37,10 @@ public class News extends BaseTime {
 
     @Comment("뉴스 url")
     String url;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "stock_id")
+    @Comment("주식 아이디")
+    Stock stock;
 
 }

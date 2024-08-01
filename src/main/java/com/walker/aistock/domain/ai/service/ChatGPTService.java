@@ -40,7 +40,7 @@ public class ChatGPTService {
     private final FileService fileService;
     private final WebClientService webClientService;
 
-    public String chatGPTReport(String keyword, String ticker) {
+    public String chatGPTAnalysis(String keyword, String ticker) {
 
         if(ticker == null || ticker.equals("")) {
             ticker = findTicker(keyword);
@@ -50,18 +50,18 @@ public class ChatGPTService {
         FearGreedRes fearGreedRes = fearGreedService.fearGreed();
         FinvizDetailRes finvizDetailRes = finvizService.scrapingFinviz(ticker);
         List<StockRecommendRes> stockRecommendRes = finnhubService.stockRecommend(new StockRecommendReq(ticker));
-        List<StockNewsRes> stockNewsRes = finnhubService.stockNews(new StockNewsReq(ticker, now().minusDays(2).toString(), now().toString()));
         // TODO news에 대한 데이터는 좀 더 세부적인 내용이 있는 Source 찾아서 대체 요망
+        List<StockNewsRes> stockNewsRes = finnhubService.stockNews(new StockNewsReq(ticker, now().minusDays(2).toString(), now().toString()));
 
         // AI
-        String stockAnalysis = webClientService.chatGPTAsk(promptService.makePromptForStockAnalysis(ticker, fearGreedRes, finvizDetailRes, stockRecommendRes));
-        String newses = webClientService.chatGPTAsk(promptService.makePromptForNewsTranslate(stockNewsRes));
-        String imageId = chatGPTImage(promptService.makePromptStockImageDraw(newses));
-        String speechId = chatGPTSpeech(new ChatGPTSpeechReq(stockAnalysis + newses));
+        String stockReport = webClientService.chatGPTAsk(promptService.makePromptForStockReport(ticker, fearGreedRes, finvizDetailRes, stockRecommendRes));
+        String newsBriefing = webClientService.chatGPTAsk(promptService.makePromptForNewsTranslate(stockNewsRes));
+        String imageId = chatGPTImage(promptService.makePromptStockImageDraw(newsBriefing));
+        String speechId = chatGPTSpeech(new ChatGPTSpeechReq(stockReport + newsBriefing));
 
         // TODO 위에 Data들 DB에 저장 및 관리(image/speech 파일의 저장 경로 수정 요망)
 
-        return stockAnalysis + newses;
+        return stockReport + newsBriefing;
     }
 
     public String findTicker(String keyword) {

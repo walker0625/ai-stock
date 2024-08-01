@@ -16,9 +16,9 @@ public class ChatGPTController {
 
     private final ChatGPTService chatGPTService;
 
-    @GetMapping("/report")
-    public String chatGPTReport(String keyword, String ticker) {
-        return chatGPTService.chatGPTReport(keyword, ticker);
+    @GetMapping("/analysis")
+    public String chatGPTAnalysis(String keyword, String ticker) {
+        return chatGPTService.chatGPTAnalysis(keyword, ticker);
     }
 
     @PostMapping("/image")

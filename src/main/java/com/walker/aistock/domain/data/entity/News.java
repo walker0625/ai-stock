@@ -60,9 +60,9 @@ public class News extends BaseTime {
     public static News create(StockNewsRes stockNewsRes, Stock stock) {
         return News.builder()
                     .headline(stockNewsRes.getHeadline())
-                    .summary(stockNewsRes.getSummary())
-                    .image(stockNewsRes.getImage())
-                    .url(stockNewsRes.getUrl())
+                    .summary(stockNewsRes.getSummary().isEmpty() ? null : stockNewsRes.getSummary())
+                    .image(stockNewsRes.getImage().isEmpty() ? null : stockNewsRes.getImage())
+                    .url(stockNewsRes.getUrl().isEmpty() ? null : stockNewsRes.getUrl())
                     .stock(stock)
                 .build();
     }

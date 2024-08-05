@@ -25,6 +25,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -48,6 +49,7 @@ public class ChatGPTService {
 
     StockRepository stockRepository;
 
+    @Transactional
     public String chatGPTAnalysis(String keyword, String ticker) {
 
         if (ticker == null || ticker.equals("")) {
@@ -61,17 +63,16 @@ public class ChatGPTService {
         }
 
         // DATA
-        FearGreedRes fearGreedRes = fearGreedService.fearGreed();
         FinvizDetailRes finvizDetailRes = finvizService.scrapingFinviz(ticker);
 
         StockRecommendRes stockRecommendRes = finnhubService.stockRecommend(new StockRecommendReq(ticker));
         // TODO news에 대한 데이터는 좀 더 세부적인 내용이 있는 Source 찾아서 대체 요망
         List<StockNewsRes> stockNewsRes = finnhubService.stockNews(new StockNewsReq(ticker, now().minusDays(2).toString(), now().toString()));
 
-        dataPersistenceService.saveSourceDatas(fearGreedRes, finvizDetailRes, stockRecommendRes, stockNewsRes, stock);
+        dataPersistenceService.saveSourceDatas(finvizDetailRes, stockRecommendRes, stockNewsRes, stock);
 
         // AI
-        String stockReport = webClientService.chatGPTAsk(promptService.makePromptForStockReport(ticker, fearGreedRes, finvizDetailRes, stockRecommendRes));
+        String stockReport = webClientService.chatGPTAsk(promptService.makePromptForStockReport(ticker, finvizDetailRes, stockRecommendRes));
         String newsBriefing = webClientService.chatGPTAsk(promptService.makePromptForNewsTranslate(stockNewsRes));
 
         dataPersistenceService.saveGeneratedTexts(stockReport, newsBriefing, stock);

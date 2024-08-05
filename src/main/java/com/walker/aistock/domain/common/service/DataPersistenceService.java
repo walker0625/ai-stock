@@ -23,7 +23,7 @@ import com.walker.aistock.domain.data.repository.IndicatorRepository;
 import com.walker.aistock.domain.data.repository.FearGreedRepository;
 import com.walker.aistock.domain.data.repository.NewsRepository;
 import com.walker.aistock.domain.data.repository.RecommendRepository;
-import jakarta.transaction.Transactional;
+import org.springframework.transaction.annotation.Transactional;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
@@ -53,10 +53,8 @@ public class DataPersistenceService {
     TodayImageRepository todayImageRepository;
 
     @Transactional
-    public void saveSourceDatas(FearGreedRes fearGreedRes, FinvizDetailRes finvizDetailRes, StockRecommendRes stockRecommendRes,
-                                List<StockNewsRes> stockNewsRes, Stock stock) {
+    public void saveSourceDatas(FinvizDetailRes finvizDetailRes, StockRecommendRes stockRecommendRes, List<StockNewsRes> stockNewsRes, Stock stock) {
 
-        fearGreedRepository.save(FearGreed.create(fearGreedRes));
         indicatorRepository.save(Indicator.create(finvizDetailRes, stock));
         recommendUpsert(stockRecommendRes, stock);
         newsRepository.saveAll(stockNewsRes.stream().map(n -> News.create(n, stock)).collect(Collectors.toList()));

@@ -40,16 +40,8 @@ public class QuantitativeDataVO {
     private int sell;
     private int strongSell;
 
-    public QuantitativeDataVO(String ticker, FearGreedRes fearGreedRes, FinvizDetailRes finvizDetailRes, StockRecommendRes stockRecommendRes) {
+    public QuantitativeDataVO(String ticker, FinvizDetailRes finvizDetailRes, StockRecommendRes stockRecommendRes) {
         this.ticker = ticker;
-
-        this.fearAndGreedIndex = fearGreedRes.getScore();
-        this.fearAndGreedStatus = fearGreedRes.getRating();
-        this.previousFearAndGreedIndex = fearGreedRes.getPreviousClose();
-        this.previous1WeekFearAndGreedIndex = fearGreedRes.getPrevious1Week();
-        this.previous1MonthFearAndGreedIndex = fearGreedRes.getPrevious1Month();
-        this.previous1YearFearAndGreedIndex = fearGreedRes.getPrevious1Year();
-        this.fearAndGreedUpdateDate = fearGreedRes.getTimestamp();
 
         this.per = finvizDetailRes.getPer();
         this.forwardPer = finvizDetailRes.getFper();

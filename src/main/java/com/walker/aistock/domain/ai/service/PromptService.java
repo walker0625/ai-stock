@@ -1,7 +1,11 @@
 package com.walker.aistock.domain.ai.service;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.ser.FilterProvider;
+import com.fasterxml.jackson.databind.ser.impl.SimpleBeanPropertyFilter;
+import com.fasterxml.jackson.databind.ser.impl.SimpleFilterProvider;
 import com.walker.aistock.domain.ai.dto.req.ChatGPTAskReq;
 import com.walker.aistock.domain.ai.dto.req.ChatGPTImageReq;
 import com.walker.aistock.domain.ai.vo.MessageVO;
@@ -29,13 +33,12 @@ public class PromptService {
 
     ObjectMapper objectMapper;
 
-    public ChatGPTAskReq makePromptForStockReport(String ticker, FearGreedRes fearGreedRes, FinvizDetailRes finvizDetailRes,
-                                                  StockRecommendRes stockRecommendRes) {
+    public ChatGPTAskReq makePromptForStockReport(String ticker, FinvizDetailRes finvizDetailRes, StockRecommendRes stockRecommendRes) {
 
         String quantitativeData = null;
 
         try {
-            quantitativeData = objectMapper.writeValueAsString(new QuantitativeDataVO(ticker, fearGreedRes, finvizDetailRes, stockRecommendRes));
+            quantitativeData = objectMapper.writeValueAsString(new QuantitativeDataVO(ticker, finvizDetailRes, stockRecommendRes));
         } catch (JsonProcessingException e) {
             throw new RuntimeException(e);
         }
@@ -51,6 +54,12 @@ public class PromptService {
     }
 
     public ChatGPTAskReq makePromptForNewsTranslate(List<StockNewsRes> stockNewsRes) {
+
+        SimpleBeanPropertyFilter filter = SimpleBeanPropertyFilter.serializeAllExcept("image", "url");
+        FilterProvider filters = new SimpleFilterProvider().addFilter("stockNewsFilter", filter);
+
+        objectMapper.setFilterProvider(filters);
+        objectMapper.setSerializationInclusion(JsonInclude.Include.NON_EMPTY); // null, 공백 제외
 
         String stockNewses = null;
 
@@ -77,6 +86,8 @@ public class PromptService {
             STOCK_NEWS.getStart() + newses + STOCK_NEWS.getEnd() +
             IMAGE_DRAW.getValue()
         ;
+
+        System.out.println("total : " + imagePrompt);
 
         return new ChatGPTImageReq(imagePrompt);
     }

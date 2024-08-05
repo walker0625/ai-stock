@@ -85,7 +85,7 @@ public class ChatGPTService {
     }
 
     public String findTicker(String keyword) {
-        return webClientService.chatGPTAsk(new ChatGPTAskReq(AskModel.GPT3_TURBO, // 단순 질문은 가벼운 model 사용
+        return webClientService.chatGPTAsk(new ChatGPTAskReq(AskModel.GPT4_MINI, // 단순 질문은 가벼운 model 사용
                                                List.of(new MessageVO(AskRole.USER, String.format(TICKER.getValue(), keyword))))
         );
     }

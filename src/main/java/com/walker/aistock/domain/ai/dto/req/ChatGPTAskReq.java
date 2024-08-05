@@ -13,7 +13,7 @@ import java.util.List;
 @AllArgsConstructor
 public class ChatGPTAskReq {
 
-    private AskModel model = AskModel.GPT4_TURBO;
+    private AskModel model = AskModel.GPT4_O;
     private List<MessageVO> messages;
 
     public ChatGPTAskReq(List<MessageVO> messages) {

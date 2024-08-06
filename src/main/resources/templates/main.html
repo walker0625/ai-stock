@@ -9,7 +9,7 @@
 
 		<div id="page-wrapper">
 
-			<th:block th:replace="common :: header"></th:block>
+			<th:block th:replace="~{common :: header}"></th:block>
 
 			<!-- Banner -->
 			<section id="banner">
@@ -32,11 +32,11 @@
 				</section>
 			</section>
 
-			<th:block th:replace="common :: footer"></th:block>
+			<th:block th:replace="~{common :: footer}"></th:block>
 
 		</div>
 
-		<th:block th:replace="common :: static"></th:block>
+		<th:block th:replace="~{common :: static}"></th:block>
 
 	</body>
 </html>

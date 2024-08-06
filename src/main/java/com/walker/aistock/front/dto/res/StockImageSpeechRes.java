@@ -1,11 +1,8 @@
 package com.walker.aistock.front.dto.res;
 
-import com.querydsl.core.annotations.QueryProjection;
 import com.walker.aistock.backend.common.entity.Stock;
-import com.walker.aistock.backend.common.enums.FilePath;
 import com.walker.aistock.backend.common.enums.FileType;
 import lombok.AccessLevel;
-import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.FieldDefaults;
@@ -27,7 +24,6 @@ public class StockImageSpeechRes {
     String speechPath;
     LocalDate date;
 
-    @Builder
     public StockImageSpeechRes(Stock stock) {
         this.stockId = stock.getId();
         this.name = stock.getName();

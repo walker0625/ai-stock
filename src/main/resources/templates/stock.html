@@ -8,45 +8,45 @@
 	<body class="is-preload">
 		<div id="page-wrapper">
 
-			<th:block th:replace="common :: header"></th:block>
+			<th:block th:replace="~{common :: header}"></th:block>
 
 				<section id="main" class="container">
 					<header>
-						<h2>NVDA 분석(2024-08-03)</h2>
+						<h2 th:text="${stock.name} + ' 분석(' + ${stock.ticker} + ')' + ' : ' + ${stock.date}"></h2>
 						<p>오늘의 이미지 / 오늘의 리포트 / 오늘의 브리핑 / 3일간 뉴스 원문</p>
 					</header>
 					<div class="box">
 						<h2>오늘의 이미지</h2>
-						<span class="image featured"><img src="/image/nvidia.jpg" alt="" /></span>
+						<span class="image featured"><img th:src="@{${stock.imagePath}}" alt="" /></span>
 					</div>
 					<div class="box">
-						<h2>오늘의 리포트 - <span><a href="https://finviz.com/quote.ashx?t=NVDA&p=d">chart(from finviz)</a></span></h2>
+						<h2>오늘의 리포트 - <span><a th:href="@{https://finviz.com/quote.ashx(t=${stock.ticker})}">chart(from finviz)</a></span></h2>
 						<div class="table-wrapper">
 							<table class="alt">
 								<tbody>
 									<tr>
 										<td>PER</td>
-										<td>63</td>
-										<td>PEG</td>
-										<td>1.74</td>
-									</tr>
-									<tr>
+										<td th:text="${stock.per}"></td>
 										<td>FORWARD PER</td>
-										<td>30.2</td>
-										<td>RSI</td>
-										<td>35</td>
+										<td th:text="${stock.forwardPer}"></td>
 									</tr>
 									<tr>
 										<td>EPS</td>
-										<td>1.67</td>
-										<td>목표가</td>
-										<td>202</td>
+										<td th:text="${stock.eps}"></td>
+										<td>FORWARD EPS</td>
+										<td th:text="${stock.forwardEps}"></td>
 									</tr>
 									<tr>
-										<td>FORWARD EPS</td>
-										<td>3.56</td>
+										<td>PEG</td>
+										<td th:text="${stock.peg}"></td>
+										<td>RSI</td>
+										<td th:text="${stock.rsi}"></td>
+									</tr>
+									<tr>
 										<td>현재가</td>
-										<td>107</td>
+										<td th:text="${stock.nowPrice}"></td>
+										<td>목표가</td>
+										<td th:text="${stock.targetPrice}"></td>
 									</tr>
 								</tbody>
 							</table>
@@ -60,48 +60,46 @@
 										<td>강력 매도</td>
 									</tr>
 									<tr>
-										<td>15</td>
-										<td>5</td>
-										<td>3</td>
-										<td>0</td>
-										<td>1</td>
+										<td th:text="${stock.strongBuy}"></td>
+										<td th:text="${stock.buy}"></td>
+										<td th:text="${stock.hold}"></td>
+										<td th:text="${stock.sell}"></td>
+										<td th:text="${stock.strongSell}"></td>
 									</tr>
 								</tbody>
 							</table>
 							<h3>Stock analysis</h3>
-							<p>안녕하십니까? 오늘의 주요 금융 뉴스를 전해드리겠습니다. 먼저, 엔비디아 주식이 오늘도 하락세를 이어가고 있습니다. 이번 주에 다수의 기업들이 실적을 발표할 예정인 가운데, 투자자들 사이에서는 엔비디아 주식의 변동성이 클 것으로 예상되고 있습니다. 엔비디아는 오늘 5.7% 하락했으며, 이는 빅테크 기업들의 실적 발표를 앞두고 투자자들이 인공지능 관련 회사의 성과에 대한 지표를 기다리고 있기 때문입니다. 또한, 엔비디아를 포함한 다른 반도체 주식들이 하락하면서 S&P 500과 나스닥 지수를 끌어내렸습니다. 특히, 엔비디아는 오늘 6% 이상 급락하여 2개월 만에 최저치를 기록했습니다. 한편, AMD는 예상을 뛰어넘는 강력한 2분기 실적을 발표하면서 상승세를 보이고 있습니다. AMD의 주식은 강력한 매출 성장을 기반으로 3분기에도 좋은 성과가 예상된다고 합니다. 다음으로, 소규모 기업들이 나스닥을 앞질러 성장하고 있습니다. 오늘 나스닥 종합지수는 최근 거래에서 1.3% 하락했지만, 스몰캡 지수인 러셀 2000은 소폭 하락했을 뿐입니다. 마지막으로, 엔비디아와 다른 칩 주식들이 큰 기술 기업들의 실적 발표를 앞두고 시장을 끌어내리는 주요 요인으로 작용하고 있습니다. 엔비디아 주식은 오늘 5.9% 하락했으며, 이는 반도체 업계 전반에 영향을 미치고 있습니다. 이상으로 오늘의 주식 시장 뉴스를 마치겠습니다. 감사합니다.</p>
+							<p th:text="${stock.report}"></p>
 						</div>
 					</div>
 					<div class="box">
 						<h2>오늘의 브리핑</h2>
-						<span class="image featured"><img src="/image/news.jpg" alt="" /></span>
-						<a href="#" class="button primary">Play</a>
-						<h3>Script</h3>
-						<p>안녕하십니까? 오늘의 주요 금융 뉴스를 전해드리겠습니다. 먼저, 엔비디아 주식이 오늘도 하락세를 이어가고 있습니다. 이번 주에 다수의 기업들이 실적을 발표할 예정인 가운데, 투자자들 사이에서는 엔비디아 주식의 변동성이 클 것으로 예상되고 있습니다. 엔비디아는 오늘 5.7% 하락했으며, 이는 빅테크 기업들의 실적 발표를 앞두고 투자자들이 인공지능 관련 회사의 성과에 대한 지표를 기다리고 있기 때문입니다. 또한, 엔비디아를 포함한 다른 반도체 주식들이 하락하면서 S&P 500과 나스닥 지수를 끌어내렸습니다. 특히, 엔비디아는 오늘 6% 이상 급락하여 2개월 만에 최저치를 기록했습니다. 한편, AMD는 예상을 뛰어넘는 강력한 2분기 실적을 발표하면서 상승세를 보이고 있습니다. AMD의 주식은 강력한 매출 성장을 기반으로 3분기에도 좋은 성과가 예상된다고 합니다. 다음으로, 소규모 기업들이 나스닥을 앞질러 성장하고 있습니다. 오늘 나스닥 종합지수는 최근 거래에서 1.3% 하락했지만, 스몰캡 지수인 러셀 2000은 소폭 하락했을 뿐입니다. 마지막으로, 엔비디아와 다른 칩 주식들이 큰 기술 기업들의 실적 발표를 앞두고 시장을 끌어내리는 주요 요인으로 작용하고 있습니다. 엔비디아 주식은 오늘 5.9% 하락했으며, 이는 반도체 업계 전반에 영향을 미치고 있습니다. 이상으로 오늘의 주식 시장 뉴스를 마치겠습니다. 감사합니다.</p>
+						<span class="image featured"><img src="/image/newsRoom.jpg" alt="" /></span>
+						<h3>Full Speech(Stock analysis + News Script)</h3>
+						<audio controls>
+							<source th:src="@{${stock.speechPath}}" type="audio/ogg">
+						</audio>
+						<h3>News Script</h3>
+						<p th:text="${stock.script}"></p>
 					</div>
 					<div class="box">
 						<h2>3일간 뉴스 원문</h2>
 						<table class="alt">
 							<tbody>
-								<tr>
-									<td><a href="https://finnhub.io/api/news?id=93321036c6dc6b6d8e3e168ae319665de7ce6bb235b2d6e306ba208704c3d3a0">Delay to Nvidia's new AI chip could affect Microsoft, Google, Meta, Information says</a></td>
-								</tr>
-								<tr>
-									<td><a href="https://finnhub.io/api/news?id=93321036c6dc6b6d8e3e168ae319665de7ce6bb235b2d6e306ba208704c3d3a0">Technical Analyst: NVIDIA Corp (NASDAQ:NVDA) Has ‘Triggered’ a ‘Sell Signal’</a></td>
-								</tr>
-								<tr>
-									<td><a href="https://finnhub.io/api/news?id=93321036c6dc6b6d8e3e168ae319665de7ce6bb235b2d6e306ba208704c3d3a0">Chip Stocks Staring At Another Bloodbath As Intel Tumbles, Nvidia Dips 4%, ASML Crumbles Over 6%: What's Ailing The Sector Friday</a></td>
+								<tr th:each="news : ${newses}">
+									<td><img th:src="${news.image != null ? news.image : '/static/image/news.jpg'}" alt="" width="50" height="50"/></td>
+									<td><a th:href="${news.url}" th:text="${news.headline}"></a></td>
 								</tr>
 							</tbody>
 						</table>
 					</div>
 				</section>
 
-			<th:block th:replace="common :: footer"></th:block>
+			<th:block th:replace="~{common :: footer}"></th:block>
 
 		</div>
 
-		<th:block th:replace="common :: static"></th:block>
+		<th:block th:replace="~{common :: static}"></th:block>
 
 	</body>
 </html>

@@ -4,28 +4,12 @@
 		<title>AI STOCK</title>
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
-		<link rel="stylesheet" href="../static/css/main.css" />
 	</head>
 	<body class="is-preload">
 		<div id="page-wrapper">
 
-			<!-- Header -->
-				<header id="header">
-					<h1><a href="/main">AI STOCK</a> with chatgpt</h1>
-					<nav id="nav">
-						<ul>
-							<li><a href="/main">Main</a></li>
-							<li>
-								<a href="#" class="icon solid fa-angle-down">Stocks</a>
-								<ul>
-									<li><a href="stock.html">Stock</a></li>
-								</ul>
-							</li>
-						</ul>
-					</nav>
-				</header>
+			<th:block th:replace="common :: header"></th:block>
 
-			<!-- Main -->
 				<section id="main" class="container">
 					<header>
 						<h2>NVDA 분석(2024-08-03)</h2>
@@ -113,23 +97,11 @@
 					</div>
 				</section>
 
-			<!-- Footer -->
-				<footer id="footer">
-					<ul class="copyright">
-						<li>&copy; AI STOCK. All rights reserved.</li>
-					</ul>
-				</footer>
+			<th:block th:replace="common :: footer"></th:block>
 
 		</div>
 
-		<!-- Scripts -->
-			<script src="/js/jquery.min.js"></script>
-			<script src="/js/jquery.dropotron.min.js"></script>
-			<script src="/js/jquery.scrollex.min.js"></script>
-			<script src="/js/browser.min.js"></script>
-			<script src="/js/breakpoints.min.js"></script>
-			<script src="/js/util.js"></script>
-			<script src="/js/main.js"></script>
+		<th:block th:replace="common :: static"></th:block>
 
 	</body>
 </html>

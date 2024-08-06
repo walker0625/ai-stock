@@ -4,27 +4,12 @@
 		<title>AI STOCK</title>
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
-		<link rel="stylesheet" href="/static/css/main.css" />
 	</head>
 	<body class="landing is-preload">
 
 		<div id="page-wrapper">
 
-			<!-- Header -->
-			<header id="header" class="alt">
-				<h1><a href="/main">AI STOCK</a> with chatgpt</h1>
-				<nav id="nav">
-					<ul>
-						<li><a href="/main">Main</a></li>
-						<li>
-							<a href="#" class="icon solid fa-angle-down">Stocks</a>
-							<ul>
-								<li><a href="stock.html">Stock</a></li>
-							</ul>
-						</li>
-					</ul>
-				</nav>
-			</header>
+			<th:block th:replace="common :: header"></th:block>
 
 			<!-- Banner -->
 			<section id="banner">
@@ -39,31 +24,19 @@
 			<!-- Main -->
 			<section id="main" class="container">
 				<section class="box special" th:each="stock : ${stocks}">
-					<h2 th:text="${stock.getName()} + '(' + ${stock.getTicker()} + ')' + ' : ' + ${stock.getDate()}"></h2>
-					<a href="stock.html"><span class="image featured"><img th:src="@{${stock.getImagePath()}}" alt="" /></span></a>
+					<h2 th:text="${stock.name} + '(' + ${stock.ticker} + ')' + ' : ' + ${stock.date}"></h2>
+					<a th:href="@{/stocks/{stockId}(stockId=${stock.stockId})}"><span class="image featured"><img th:src="@{${stock.imagePath}}" alt="" /></span></a>
 					<audio controls>
-						<source th:src="@{${stock.getSpeechPath()}}" type="audio/ogg">
+						<source th:src="@{${stock.speechPath}}" type="audio/ogg">
 					</audio>
 				</section>
 			</section>
 
-			<!-- Footer -->
-			<footer id="footer">
-				<ul class="copyright">
-					<li>&copy; AI STOCK. All rights reserved.</li>
-				</ul>
-			</footer>
+			<th:block th:replace="common :: footer"></th:block>
 
 		</div>
 
-		<!-- Scripts -->
-		<script src="/static/js/jquery.min.js"></script>
-		<script src="/static/js/jquery.dropotron.min.js"></script>
-		<script src="/static/js/jquery.scrollex.min.js"></script>
-		<script src="/static/js/browser.min.js"></script>
-		<script src="/static/js/breakpoints.min.js"></script>
-		<script src="/static/js/util.js"></script>
-		<script src="/static/js/main.js"></script>
+		<th:block th:replace="common :: static"></th:block>
 
 	</body>
 </html>

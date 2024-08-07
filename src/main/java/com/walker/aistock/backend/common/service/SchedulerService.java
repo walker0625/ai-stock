@@ -29,7 +29,7 @@ public class SchedulerService {
     StockRepository stockRepository;
 
     @Transactional
-    //@Scheduled(cron = "0 41 11 * * ?")
+    //@Scheduled(cron = "0 43 20 * * ?")
     public void makeTodayStockData() {
 
         fearGreedService.saveFearGreed();
@@ -37,6 +37,7 @@ public class SchedulerService {
         for (Stock stock : stockRepository.findAll()) {
             chatGPTService.chatGPTAnalysis(stock);
         }
+
     }
 
 }

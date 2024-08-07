@@ -8,7 +8,6 @@ import lombok.AccessLevel;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.FieldDefaults;
-import org.hibernate.annotations.Comment;
 
 import java.time.LocalDate;
 
@@ -80,4 +79,5 @@ public class StockDetailsRes {
 
         this.script = stock.getNewsBriefings().iterator().next().getScript();
     }
+
 }

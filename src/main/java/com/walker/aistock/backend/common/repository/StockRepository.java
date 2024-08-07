@@ -23,12 +23,12 @@ public interface StockRepository extends JpaRepository<Stock, Long>, StockCustom
         JOIN st.todayImages ti
         JOIN st.speeches sp
         WHERE FUNCTION('DATE', ti.createdAt) = FUNCTION('DATE', sp.createdAt)
-        AND FUNCTION('DATE', ti.createdAt) BETWEEN :twoDaysAgo AND :now
-        AND FUNCTION('DATE', sp.createdAt) BETWEEN :twoDaysAgo AND :now
+        AND FUNCTION('DATE', ti.createdAt) BETWEEN :twoDaysAgo AND :today
+        AND FUNCTION('DATE', sp.createdAt) BETWEEN :twoDaysAgo AND :today
         ORDER BY sp.createdAt DESC
         """
     )
-    List<StockImageSpeechQueryDto> findStocksWithImagesAndSpeechesBetweenThreeDays(LocalDate twoDaysAgo, LocalDate now);
+    List<StockImageSpeechQueryDto> findStocksWithImagesAndSpeechesBetweenThreeDays(LocalDate twoDaysAgo, LocalDate today);
 
     @Query(
         """

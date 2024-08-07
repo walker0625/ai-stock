@@ -1,7 +1,9 @@
 package com.walker.aistock.front.service;
 
 import com.walker.aistock.backend.common.repository.StockRepository;
+import com.walker.aistock.backend.data.repository.FearGreedRepository;
 import com.walker.aistock.backend.data.repository.NewsRepository;
+import com.walker.aistock.front.dto.res.PresentationFearGreedRes;
 import com.walker.aistock.front.dto.res.PresentationNewsRes;
 import com.walker.aistock.front.dto.res.StockDetailsRes;
 import com.walker.aistock.front.dto.res.StockImageSpeechRes;
@@ -22,8 +24,13 @@ import java.util.stream.Collectors;
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class PresentationService {
 
+    FearGreedRepository fearGreedRepository;
     StockRepository stockRepository;
     NewsRepository newsRepository;
+
+    public PresentationFearGreedRes fearGreed() {
+        return new PresentationFearGreedRes(fearGreedRepository.findByCreatedAtToday());
+    }
 
     public List<StockImageSpeechRes> stockWithImageAndSpeech() {
         return stockRepository.findStocksWithImagesAndSpeechesBetweenThreeDays(LocalDate.now().minusDays(2), LocalDate.now())

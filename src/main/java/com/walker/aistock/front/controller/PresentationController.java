@@ -25,6 +25,7 @@ public class PresentationController {
     @RequestMapping("/main")
     public String home(Model model) {
 
+        model.addAttribute("feargreed", presentationService.fearGreed());
         model.addAttribute("stocks", presentationService.stockWithImageAndSpeech());
 
         return "/main";

@@ -146,7 +146,7 @@
 
 	h1, h2, h3, h4, h5, h6 {
 		color: #646464;
-		font-weight: 300;
+		font-weight: bold;
 		line-height: 1em;
 		margin: 0 0 0.5em 0;
 	}
@@ -3177,7 +3177,8 @@
 		}
 
 		#banner h2, #banner h3, #banner h4, #banner h5, #banner h6 {
-			color: #fff;
+			color: #0000CD;
+			font-weight: bold;
 		}
 
 		#banner h2 {
@@ -3189,6 +3190,7 @@
 
 		#banner p {
 			font-size: 1.25em;
+			font-weight: bolder;
 			margin-bottom: 1.75em;
 		}
 
@@ -3277,7 +3279,7 @@
 			color: #141ed6;
 			font-size: 0.9em;
 			line-height: 1em;
-			margin: 2em 0 0 0;
+			margin: 0 0 0 0;
 			padding: 0;
 			text-align: center;
 		}
@@ -3776,7 +3778,7 @@
 		/* Footer */
 
 			#footer {
-				padding: 4em 0;
+				padding: 1em 0;
 			}
 
 				#footer .copyright li {

@@ -25,7 +25,7 @@
 			<section id="main" class="container">
 				<section class="box special" th:each="stock : ${stocks}">
 					<h2 th:text="${stock.name} + '(' + ${stock.ticker} + ')' + ' : ' + ${stock.date}"></h2>
-					<a th:href="@{/stocks/{stockId}(stockId=${stock.stockId})}"><span class="image featured"><img th:src="@{${stock.imagePath}}" alt="" /></span></a>
+					<a th:href="@{/stocks/{stockId}(stockId=${stock.stockId}, date=${stock.date})}"><span class="image featured"><img th:src="@{${stock.imagePath}}" alt="" /></span></a>
 					<audio controls>
 						<source th:src="@{${stock.speechPath}}" type="audio/ogg">
 					</audio>

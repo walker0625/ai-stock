@@ -9,6 +9,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 
 @Slf4j
 @Controller
@@ -27,10 +31,14 @@ public class PresentationController {
     }
 
     @RequestMapping("/stocks/{stockId}")
-    public String stock(@PathVariable String stockId, Model model) {
+    public String stock(@PathVariable String stockId,
+                        @RequestParam String date,
+                        Model model) {
 
-        model.addAttribute("stock", presentationService.stockWithDetails(Long.parseLong(stockId)));
-        model.addAttribute("newses", presentationService.stockWithNewses(Long.parseLong(stockId)));
+        LocalDate selectedDate = LocalDate.parse(date, DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+
+        model.addAttribute("stock", presentationService.stockWithDetails(Long.parseLong(stockId), selectedDate));
+        model.addAttribute("newses", presentationService.stockWithNewses(Long.parseLong(stockId), selectedDate));
 
         return "/stock";
     }

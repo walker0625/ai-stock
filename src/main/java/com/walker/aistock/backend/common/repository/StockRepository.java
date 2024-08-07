@@ -34,5 +34,6 @@ public interface StockRepository extends JpaRepository<Stock, Long>, StockCustom
             "WHERE st.id = :stockId " +
             "AND FUNCTION('DATE', ii.createdAt) = :now ")
     StockDetailsRes findStockWithDetails(Long stockId, LocalDate now);
+
 }
 

@@ -9,6 +9,7 @@ import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -29,15 +30,13 @@ public class PresentationService {
                               .stream().map(StockImageSpeechRes::new).collect(Collectors.toList());
     }
 
-    public StockDetailsRes stockWithDetails(Long stockId) {
-
-        return stockRepository.findStockWithDetails(stockId, LocalDate.now());
+    public StockDetailsRes stockWithDetails(Long stockId, LocalDate selectedDate) {
+        return stockRepository.findStockWithDetails(stockId, selectedDate);
     }
 
-    public List<PresentationNewsRes> stockWithNewses(Long stockId) {
-
-        return newsRepository.findByStockIdAndCreatedAt(stockId, LocalDate.now())
-                             .stream().map(PresentationNewsRes::new).limit(10).collect(Collectors.toList());
+    public List<PresentationNewsRes> stockWithNewses(Long stockId, LocalDate selectedDate) {
+        return newsRepository.findByStockIdAndCreatedAt(stockId, selectedDate, PageRequest.of(0, 7))
+                             .stream().map(PresentationNewsRes::new).collect(Collectors.toList());
     }
 
 }

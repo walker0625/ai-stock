@@ -49,24 +49,13 @@ public class DataPersistenceService {
     public void saveSourceDatas(FinvizDetailRes finvizDetailRes, StockRecommendRes stockRecommendRes, List<StockNewsRes> stockNewsRes, Stock stock) {
 
         indicatorRepository.save(Indicator.create(finvizDetailRes, stock));
-        recommendUpsert(stockRecommendRes, stock);
+        recommendRepository.save(Recommend.create(stockRecommendRes, stock));
         newsRepository.saveAll(stockNewsRes.stream().map(n -> News.create(n, stock)).collect(Collectors.toList()));
     }
 
     @Transactional
-    public void recommendUpsert(StockRecommendRes stockRecommendRes, Stock stock) {
-
-        Recommend recommend = recommendRepository.findByStockIdAndRecommendDate(stock.getId(), stockRecommendRes.getPeriod());
-
-        if (recommend == null) {
-            recommendRepository.save(Recommend.create(stockRecommendRes, stock));
-        } else {
-            recommend.modify(stockRecommendRes);
-        }
-    }
-
-    @Transactional
     public void saveGeneratedTexts(String stockReport, String newsBriefing, Stock stock) {
+
         reportRepository.save(Report.create(stockReport, stock));
         newsBriefingRepository.save(NewsBriefing.create(newsBriefing, stock));
     }

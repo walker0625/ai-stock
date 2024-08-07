@@ -14,26 +14,39 @@ public interface StockRepository extends JpaRepository<Stock, Long>, StockCustom
 
     Stock findByTicker(String ticker);
 
-    @EntityGraph(attributePaths = {"todayImages", "speeches"})
-    @Query("SELECT st " +
-            "FROM Stock st " +
-            "JOIN st.todayImages ti " +
-            "JOIN st.speeches sp " +
-            "WHERE FUNCTION('DATE', ti.createdAt) BETWEEN :twoDaysAgo AND :now ")
+    @Query(
+        """
+        SELECT st
+        FROM Stock st
+        JOIN FETCH st.todayImages ti
+        JOIN FETCH st.speeches sp
+        WHERE FUNCTION('DATE', ti.createdAt) BETWEEN :twoDaysAgo AND :now
+        AND FUNCTION('DATE', sp.createdAt) BETWEEN :twoDaysAgo AND :now
+        """
+    )
     List<Stock> findStocksWithImagesAndSpeechesBetweenThreeDays(LocalDate twoDaysAgo, LocalDate now);
 
-    @EntityGraph(attributePaths = {"todayImages", "indicators", "recommends", "reports", "speeches", "newsBriefings"})
-    @Query("SELECT st " +
-            "FROM Stock st " +
-            "JOIN st.todayImages ti " +
-            "JOIN st.indicators ii " +
-            "JOIN st.recommends rc " +
-            "JOIN st.reports re " +
-            "JOIN st.speeches sp " +
-            "JOIN st.newsBriefings nb " +
-            "WHERE st.id = :stockId " +
-            "AND FUNCTION('DATE', ii.createdAt) = :now ")
-    StockDetailsRes findStockWithDetails(Long stockId, LocalDate now);
+     // TODO 좀 더 효율적이고 간단하게 리팩토링 요망
+    @Query(
+        """
+        SELECT st
+        FROM Stock st
+            JOIN FETCH st.todayImages ti
+            JOIN FETCH st.indicators ii
+            JOIN FETCH st.recommends rc
+            JOIN FETCH st.reports re
+            JOIN FETCH st.speeches sp
+            JOIN FETCH st.newsBriefings nb
+        WHERE st.id = :stockId
+            AND FUNCTION('DATE', ti.createdAt) = :selectedDate
+            AND FUNCTION('DATE', ii.createdAt) = :selectedDate
+            AND FUNCTION('DATE', rc.createdAt) = :selectedDate
+            AND FUNCTION('DATE', re.createdAt) = :selectedDate
+            AND FUNCTION('DATE', sp.createdAt) = :selectedDate
+            AND FUNCTION('DATE', nb.createdAt) = :selectedDate
+        """
+    )
+    StockDetailsRes findStockWithDetails(Long stockId, LocalDate selectedDate);
 
 }
 

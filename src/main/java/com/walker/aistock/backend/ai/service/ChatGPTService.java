@@ -54,9 +54,9 @@ public class ChatGPTService {
     }
 
     @Transactional
-    public String chatGPTAnalysis(String ticker) {
+    public String chatGPTAnalysis(Stock stock) {
 
-        Stock stock = stockRepository.findByTicker(ticker);
+        String ticker = stock.getTicker();
 
         // DATA
         FinvizDetailRes finvizDetailRes = finvizService.scrapingFinviz(ticker);

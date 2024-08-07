@@ -5,6 +5,7 @@ import com.walker.aistock.backend.ai.dto.req.ChatGPTImageReq;
 import com.walker.aistock.backend.ai.dto.req.ChatGPTSpeechReq;
 import com.walker.aistock.backend.ai.dto.res.ChatGPTImageRes;
 import com.walker.aistock.backend.ai.service.ChatGPTService;
+import com.walker.aistock.backend.common.repository.StockRepository;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
@@ -18,7 +19,9 @@ import org.springframework.web.bind.annotation.*;
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class ChatGPTController {
 
-    private final ChatGPTService chatGPTService;
+    ChatGPTService chatGPTService;
+
+    StockRepository stockRepository;
 
     @GetMapping("/stock")
     public void addStock(String keyword) {
@@ -27,7 +30,7 @@ public class ChatGPTController {
 
     @GetMapping("/analysis")
     public String chatGPTAnalysis(String ticker) {
-        return chatGPTService.chatGPTAnalysis(ticker);
+        return chatGPTService.chatGPTAnalysis(stockRepository.findByTicker(ticker));
     }
 
     @PostMapping("/image")

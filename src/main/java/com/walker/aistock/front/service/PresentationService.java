@@ -26,8 +26,11 @@ public class PresentationService {
     NewsRepository newsRepository;
 
     public List<StockImageSpeechRes> stockWithImageAndSpeech() {
-        return stockRepository.findStocksWithImagesAndSpeechesBetweenThreeDays(LocalDate.now().minusDays(2), LocalDate.now())
-                              .stream().map(StockImageSpeechRes::new).collect(Collectors.toList());
+
+        List<StockImageSpeechRes> collect = stockRepository.findStocksWithImagesAndSpeechesBetweenThreeDays(LocalDate.now().minusDays(2), LocalDate.now())
+                .stream().map(StockImageSpeechRes::new).collect(Collectors.toList());
+
+        return collect;
     }
 
     public StockDetailsRes stockWithDetails(Long stockId, LocalDate selectedDate) {

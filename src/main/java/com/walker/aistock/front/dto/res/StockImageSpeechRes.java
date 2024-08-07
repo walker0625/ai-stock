@@ -24,13 +24,13 @@ public class StockImageSpeechRes {
     String speechPath;
     LocalDate date;
 
-    public StockImageSpeechRes(Stock stock) {
-        this.stockId = stock.getId();
-        this.name = stock.getName();
-        this.ticker = stock.getTicker();
-        this.imagePath = String.format(IMAGE_SRC_PATH.getValue(), stock.getTodayImages().iterator().next().getImageFileKey(), FileType.JPG.getValue());
-        this.speechPath = String.format(SPEECH_SRC_PATH.getValue(), stock.getSpeeches().iterator().next().getSpeechFileKey(), FileType.OPUS.getValue());
-        this.date = stock.getTodayImages().iterator().next().getCreatedAt().toLocalDate();
+    public StockImageSpeechRes(StockImageSpeechQueryDto queryDto) {
+        this.stockId = queryDto.getStockId();
+        this.name = queryDto.getName();
+        this.ticker = queryDto.getTicker();
+        this.imagePath = String.format(IMAGE_SRC_PATH.getValue(), queryDto.getImageFileKey(), FileType.JPG.getValue());
+        this.speechPath = String.format(SPEECH_SRC_PATH.getValue(), queryDto.getSpeechFileKey(), FileType.OPUS.getValue());
+        this.date = queryDto.getSpeechCreatedAt().toLocalDate();
     }
 
 }

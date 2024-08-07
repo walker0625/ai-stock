@@ -12,7 +12,14 @@ import java.util.List;
 @Repository
 public interface NewsRepository extends JpaRepository<News, Long> {
 
-    @Query("SELECT n FROM News n WHERE n.stock.id = :stockId AND FUNCTION('DATE', n.createdAt) = :date")
+    @Query(
+        """
+        SELECT n
+        FROM News n
+        WHERE n.stock.id = :stockId
+        AND FUNCTION('DATE', n.createdAt) = :date
+        """
+    )
     List<News> findByStockIdAndCreatedAt(Long stockId, LocalDate date, PageRequest limit);
 
 }

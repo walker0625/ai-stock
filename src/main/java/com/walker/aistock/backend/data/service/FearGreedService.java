@@ -2,6 +2,8 @@ package com.walker.aistock.backend.data.service;
 
 import com.walker.aistock.backend.common.service.WebClientService;
 import com.walker.aistock.backend.data.dto.res.FearGreedRes;
+import com.walker.aistock.backend.data.entity.FearGreed;
+import com.walker.aistock.backend.data.repository.FearGreedRepository;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
@@ -16,9 +18,15 @@ public class FearGreedService {
 
     WebClientService webClientService;
 
+    FearGreedRepository fearGreedRepository;
+
     // TODO 추후 rapid api 비용이 과도하게 나오면 셀레니움(크롬 드라이버 필요)으로 직접 스크랩핑 고려
     public FearGreedRes fearGreed() {
         return webClientService.fearGreed();
+    }
+
+    public void saveFearGreed() {
+        fearGreedRepository.save(FearGreed.create(fearGreed()));
     }
 
 }

@@ -3,6 +3,7 @@ package com.walker.aistock.backend.common.service;
 import com.walker.aistock.backend.ai.service.ChatGPTService;
 import com.walker.aistock.backend.common.entity.Stock;
 import com.walker.aistock.backend.common.repository.StockRepository;
+import com.walker.aistock.backend.data.service.FearGreedService;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
@@ -22,6 +23,7 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class SchedulerService {
 
+    FearGreedService fearGreedService;
     ChatGPTService chatGPTService;
 
     StockRepository stockRepository;
@@ -29,15 +31,12 @@ public class SchedulerService {
     @Transactional
     //@Scheduled(cron = "0 41 11 * * ?")
     public void makeTodayStockData() {
-        StopWatch stopWatch = new StopWatch();
-        stopWatch.start();
-        System.out.println("start");
+
+        fearGreedService.saveFearGreed();
+
         for (Stock stock : stockRepository.findAll()) {
             chatGPTService.chatGPTAnalysis(stock);
         }
-        stopWatch.stop();
-        System.out.println(stopWatch.prettyPrint());
-        System.out.println("end");
     }
 
 }

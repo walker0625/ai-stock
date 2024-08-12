@@ -11,6 +11,8 @@ import java.time.LocalDate;
 
 import static com.walker.aistock.backend.common.enums.FilePath.IMAGE_SRC_PATH;
 import static com.walker.aistock.backend.common.enums.FilePath.SPEECH_SRC_PATH;
+import static com.walker.aistock.backend.common.enums.FileType.JPG;
+import static com.walker.aistock.backend.common.enums.FileType.OPUS;
 
 @Data
 @NoArgsConstructor
@@ -28,8 +30,8 @@ public class StockImageSpeechRes {
         this.stockId = queryDto.getStockId();
         this.name = queryDto.getName();
         this.ticker = queryDto.getTicker();
-        this.imagePath = String.format(IMAGE_SRC_PATH.getValue(), queryDto.getImageFileKey(), FileType.JPG.getValue());
-        this.speechPath = String.format(SPEECH_SRC_PATH.getValue(), queryDto.getSpeechFileKey(), FileType.OPUS.getValue());
+        this.imagePath = IMAGE_SRC_PATH.getValue() + queryDto.getImageFileKey() + JPG.getValue();
+        this.speechPath = SPEECH_SRC_PATH.getValue() + queryDto.getSpeechFileKey() + OPUS.getValue();
         this.date = queryDto.getSpeechCreatedAt().toLocalDate();
     }
 

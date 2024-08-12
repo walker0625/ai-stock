@@ -9,12 +9,12 @@ import lombok.Getter;
 public enum FileType {
 
     // IMAGE
-    JPG("jpg"),
-    PNG("png"),
+    JPG(".jpg"),
+    PNG(".png"),
 
     // AUDIO
-    OPUS("opus"),
-    MP3("mp3")
+    OPUS(".opus"),
+    MP3(".mp3")
     ;
 
     private final String value;

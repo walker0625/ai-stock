@@ -13,6 +13,7 @@ import java.time.LocalDate;
 
 import static com.walker.aistock.backend.common.enums.FilePath.IMAGE_SRC_PATH;
 import static com.walker.aistock.backend.common.enums.FilePath.SPEECH_SRC_PATH;
+import static com.walker.aistock.backend.common.enums.FileType.*;
 
 @Data
 @NoArgsConstructor
@@ -53,7 +54,7 @@ public class StockDetailsRes {
         this.name = stock.getName();
         this.ticker = stock.getTicker();
 
-        this.imagePath = String.format(IMAGE_SRC_PATH.getValue(), stock.getTodayImages().iterator().next().getImageFileKey(), FileType.JPG.getValue());
+        this.imagePath = IMAGE_SRC_PATH.getValue() + stock.getTodayImages().iterator().next().getImageFileKey() + JPG.getValue();
 
         Indicator indicator = stock.getIndicators().iterator().next();
         this.per = indicator.getPer();
@@ -75,7 +76,7 @@ public class StockDetailsRes {
 
         this.report = stock.getReports().iterator().next().getContent().replaceAll("[#*]", "");
 
-        this.speechPath = String.format(SPEECH_SRC_PATH.getValue(), stock.getSpeeches().iterator().next().getSpeechFileKey(), FileType.OPUS.getValue());
+        this.speechPath = SPEECH_SRC_PATH.getValue() + stock.getSpeeches().iterator().next().getSpeechFileKey() + OPUS.getValue();
 
         this.script = stock.getNewsBriefings().iterator().next().getScript();
     }

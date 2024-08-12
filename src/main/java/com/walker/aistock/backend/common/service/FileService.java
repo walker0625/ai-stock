@@ -1,20 +1,25 @@
 package com.walker.aistock.backend.common.service;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.io.*;
 import java.util.Base64;
 
 import static com.walker.aistock.backend.common.enums.FileType.*;
-import static com.walker.aistock.backend.common.enums.FilePath.IMAGE_REAL_PATH;
-import static com.walker.aistock.backend.common.enums.FilePath.SPEECH_REAL_PATH;
 
 @Service
 public class FileService {
 
+    @Value("${file.realpath.image}")
+    private String IMAGE_REAL_PATH;
+
+    @Value("${file.realpath.speech}")
+    private String SPEECH_REAL_PATH;
+
     public void saveBase64Image(String imageFileKey, String base64) {
 
-        String path = String.format(IMAGE_REAL_PATH.getValue(), imageFileKey, JPG.getValue());
+        String path = IMAGE_REAL_PATH + imageFileKey + JPG.getValue();
         byte[] image = Base64.getDecoder().decode(base64);
 
         saveFile(path, image);
@@ -22,7 +27,7 @@ public class FileService {
 
     public void saveSpeechAudio(String speechFileKey, byte[] speech) {
 
-        String path = String.format(SPEECH_REAL_PATH.getValue(), speechFileKey, OPUS.getValue());
+        String path = SPEECH_REAL_PATH + speechFileKey + OPUS.getValue();
 
         saveFile(path, speech);
     }

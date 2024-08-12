@@ -16,7 +16,7 @@ public class ChatGPTSpeechReq {
     SpeechVoice voice = SpeechVoice.NOVA;
 
     @JsonProperty("response_format")
-    SpeechResponseFormat speechResponseFormat = SpeechResponseFormat.OPUS;
+    SpeechResponseFormat speechResponseFormat = SpeechResponseFormat.MP3;
 
     public ChatGPTSpeechReq(String input) {
         this.input = input;

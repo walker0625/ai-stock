@@ -76,7 +76,7 @@ public class StockDetailsRes {
 
         this.report = stock.getReports().iterator().next().getContent().replaceAll("[#*]", "");
 
-        this.speechPath = SPEECH_SRC_PATH.getValue() + stock.getSpeeches().iterator().next().getSpeechFileKey() + OPUS.getValue();
+        this.speechPath = SPEECH_SRC_PATH.getValue() + stock.getSpeeches().iterator().next().getSpeechFileKey() + MP3.getValue();
 
         this.script = stock.getNewsBriefings().iterator().next().getScript();
     }

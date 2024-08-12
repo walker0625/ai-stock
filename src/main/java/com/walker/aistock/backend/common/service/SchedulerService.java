@@ -29,7 +29,7 @@ public class SchedulerService {
     StockRepository stockRepository;
 
     @Transactional
-    @Scheduled(cron = "0 47 14 * * ?")
+    @Scheduled(cron = "0 57 14 * * ?")
     public void makeTodayStockData() {
 
         fearGreedService.saveFearGreed();

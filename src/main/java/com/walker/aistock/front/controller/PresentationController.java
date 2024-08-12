@@ -28,7 +28,7 @@ public class PresentationController {
         model.addAttribute("feargreed", presentationService.fearGreed());
         model.addAttribute("stocks", presentationService.stockWithImageAndSpeech());
 
-        return "/main";
+        return "main";
     }
 
     @RequestMapping("/stocks/{stockId}")
@@ -41,7 +41,7 @@ public class PresentationController {
         model.addAttribute("stock", presentationService.stockWithDetails(Long.parseLong(stockId), selectedDate));
         model.addAttribute("newses", presentationService.stockWithNewses(Long.parseLong(stockId), selectedDate));
 
-        return "/stock";
+        return "stock";
     }
 
 }

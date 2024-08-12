@@ -27,7 +27,7 @@ public class FileService {
 
     public void saveSpeechAudio(String speechFileKey, byte[] speech) {
 
-        String path = SPEECH_REAL_PATH + speechFileKey + OPUS.getValue();
+        String path = SPEECH_REAL_PATH + speechFileKey + MP3.getValue();
 
         saveFile(path, speech);
     }

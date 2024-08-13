@@ -33,7 +33,7 @@ public class PresentationService {
     }
 
     public List<StockImageSpeechRes> stockWithImageAndSpeech() {
-        return stockRepository.findStocksWithImagesAndSpeechesBetweenThreeDays(LocalDate.now().minusDays(7), LocalDate.now())
+        return stockRepository.findStocksWithImagesAndSpeechesBetweenThreeDays(LocalDate.now().minusDays(1), LocalDate.now())
                               .stream().map(StockImageSpeechRes::new).collect(Collectors.toList());
     }
 

@@ -63,7 +63,7 @@ public class ChatGPTService {
 
         StockRecommendRes stockRecommendRes = finnhubService.stockRecommend(new StockRecommendReq(ticker));
         // TODO news에 대한 데이터는 좀 더 세부적인 내용이 있는 Source 찾아서 대체 요망
-        List<StockNewsRes> stockNewsRes = finnhubService.stockNews(new StockNewsReq(ticker, now().minusDays(2).toString(), now().toString()));
+        List<StockNewsRes> stockNewsRes = finnhubService.stockNews(new StockNewsReq(ticker, now().minusDays(1).toString(), now().toString()));
 
         dataPersistenceService.saveSourceDatas(finvizDetailRes, stockRecommendRes, stockNewsRes, stock);
 
@@ -74,7 +74,10 @@ public class ChatGPTService {
         dataPersistenceService.saveGeneratedTexts(stockReport, newsBriefing, stock);
 
         ChatGPTImageRes chatGPTImageRes = chatGPTImage(promptService.makePromptStockImageDraw(newsBriefing));
-        byte[] speechBinary = chatGPTSpeech(new ChatGPTSpeechReq(stockReport + newsBriefing));
+        // TODO 단순히 자르는게 아니라 내용 자체를 4000자 이내로 요약할 수 있게 변경
+        String speechInput = (stockReport + newsBriefing).substring(0, 4000);
+        log.info("speechInput: {}", speechInput);
+        byte[] speechBinary = chatGPTSpeech(new ChatGPTSpeechReq(speechInput));
 
         dataPersistenceService.saveGeneratedFiles(chatGPTImageRes, speechBinary, stock);
 

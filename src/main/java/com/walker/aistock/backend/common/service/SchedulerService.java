@@ -11,10 +11,6 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.util.StopWatch;
-
-import java.util.List;
-import java.util.stream.Collectors;
 
 
 @Component
@@ -29,7 +25,7 @@ public class SchedulerService {
     StockRepository stockRepository;
 
     @Transactional
-    @Scheduled(cron = "0 57 14 * * ?")
+    @Scheduled(cron = "0 37 11 * * ?")
     public void makeTodayStockData() {
 
         fearGreedService.saveFearGreed();

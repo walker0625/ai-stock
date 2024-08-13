@@ -13,6 +13,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.client.reactive.ReactorClientHttpConnector;
+import org.springframework.http.codec.ServerCodecConfigurer;
 import org.springframework.web.reactive.function.client.ExchangeFilterFunction;
 import org.springframework.web.reactive.function.client.ExchangeStrategies;
 import org.springframework.web.reactive.function.client.WebClient;
@@ -46,14 +47,21 @@ public class WebClientConfig {
 				.clientConnector(new ReactorClientHttpConnector(httpClient))
 				.exchangeStrategies(
 					ExchangeStrategies.builder()
-					.codecs(configurer -> configurer.defaultCodecs().maxInMemorySize(5 * 1024 * 1024)) // 5MB(받아오는 이미지 크기(base64) 제한)
+					.codecs(configurer -> configurer.defaultCodecs().maxInMemorySize(10 * 1024 * 1024)) // 5MB(받아오는 이미지/오디오 파일 제한
 					.build()
 				)
 				.clientConnector(new ReactorClientHttpConnector(
-						HttpClient.create().responseTimeout(Duration.ofMinutes(3))
+						HttpClient.create().responseTimeout(Duration.ofMinutes(3)) // 요청에 대한 응답 대기시간 3분 제한
 				))
 				.filter(errorHandler())
 				.build();
+	}
+
+	@Bean
+	public ServerCodecConfigurer serverCodecConfigurer() {
+		ServerCodecConfigurer configurer = ServerCodecConfigurer.create();
+		configurer.defaultCodecs().maxInMemorySize(10 * 1024 * 1024); // 요청/응답의 버퍼 10MB로 설정(DataBufferLimitException)
+		return configurer;
 	}
 
 	/**
@@ -61,11 +69,20 @@ public class WebClientConfig {
 	 */
 	public ExchangeFilterFunction errorHandler() {
 		return ExchangeFilterFunction.ofResponseProcessor(clientResponse -> {
-			if (clientResponse.statusCode().is5xxServerError()) {
-				log.error("code :: {}", clientResponse.statusCode());
-				throw new RuntimeException("server error");
-			} else if (clientResponse.statusCode().is4xxClientError()) {
-				throw new RuntimeException("client error");
+			if (clientResponse.statusCode().isError()) {
+				return clientResponse.bodyToMono(String.class)
+						.flatMap(body -> {
+							log.error("Status Code: {}", clientResponse.statusCode());
+							log.error("Response Body: {}", body);
+
+							if (clientResponse.statusCode().is5xxServerError()) {
+								return Mono.error(new RuntimeException("Server error: " + body));
+							} else if (clientResponse.statusCode().is4xxClientError()) {
+								return Mono.error(new RuntimeException("Client error: " + body));
+							} else {
+								return Mono.just(clientResponse);
+							}
+						});
 			} else {
 				return Mono.just(clientResponse);
 			}

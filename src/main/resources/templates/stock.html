@@ -1,28 +1,35 @@
 <!DOCTYPE HTML>
 <html>
+
 	<head>
 		<title>AI STOCK</title>
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
 		<link rel="icon" href="/static/image/favicon.ico">
 	</head>
-	<body class="is-preload">
+
+	<body class="landing is-preload">
+
 		<div id="page-wrapper">
 
 			<th:block th:replace="~{common :: header}"></th:block>
 
 				<section id="main" class="container">
+
 					<header>
 						<h2 th:text="${stock.name} + ' 분석(' + ${stock.ticker} + ')' + ' : ' + ${stock.date}"></h2>
 						<p>오늘의 이미지 / 오늘의 리포트 / 오늘의 브리핑 / 뉴스 원문</p>
 					</header>
+
 					<div class="box">
 						<h2>오늘의 이미지</h2>
-						<span class="image featured"><img th:src="@{${stock.imagePath}}" alt="" /></span>
+						<span class="image featured"><img th:src="@{${stock.imagePath}}" alt=""/></span>
 					</div>
+
 					<div class="box">
 						<h2>오늘의 리포트 - <span><a th:href="@{https://finviz.com/quote.ashx(t=${stock.ticker})}">chart(finviz)</a></span></h2>
 						<div class="table-wrapper">
+
 							<table class="alt">
 								<tbody>
 									<tr>
@@ -51,6 +58,7 @@
 									</tr>
 								</tbody>
 							</table>
+
 							<table class="alt">
 								<tbody>
 									<tr>
@@ -69,26 +77,35 @@
 									</tr>
 								</tbody>
 							</table>
+
 							<h3>Stock analysis</h3>
 							<pre class="custom-pure-text" th:text="${stock.report}"></pre>
+
 						</div>
 					</div>
+
 					<div class="box">
 						<h2>오늘의 브리핑</h2>
-						<span class="image featured"><img src="/image/newsRoom.jpg" alt="" /></span>
+						<span class="image featured"><img src="/image/newsRoom.jpg" alt=""/></span>
+
 						<h3>Speech(Stock analysis + News Script)</h3>
 						<audio controls>
 							<source th:src="@{${stock.speechPath}}" type="audio/mpeg">
 						</audio>
+
 						<h3>News Script</h3>
 						<pre class="custom-pure-text" th:text="${stock.script}"></pre>
 					</div>
+
 					<div class="box">
 						<h2>뉴스 원문</h2>
 						<table class="alt">
 							<tbody>
 								<tr th:each="news : ${newses}">
-									<td><img class="custom-image-box-50" th:src="${news.image != null ? news.image : '/static/image/news.jpg'}" alt=""/></td>
+									<td>
+										<img class="custom-image-box-50" alt=""
+										 th:src="${news.image != null ? news.image : '/static/image/news.jpg'}"/>
+									</td>
 									<td><a th:href="${news.url}" th:text="${news.headline}"></a></td>
 								</tr>
 							</tbody>

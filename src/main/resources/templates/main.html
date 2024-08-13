@@ -1,11 +1,13 @@
 <!DOCTYPE HTML>
 <html>
+
 	<head>
 		<title>AI STOCK</title>
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
 		<link rel="icon" href="/static/image/favicon.ico">
 	</head>
+
 	<body class="landing is-preload">
 
 		<div id="page-wrapper">
@@ -14,15 +16,19 @@
 
 			<!-- Banner -->
 			<section id="banner">
+
 				<section class="custom-box">
 					<div class="custom-image-wrapper">
-						<img class="custom-image" th:src="@{/static/image/logo.jpg}"/>
+						<img class="custom-image" th:src="@{/static/image/logo.jpg}" alt=""/>
 					</div>
 				</section>
+
 				<p>Data를 기반으로 AI가 만든</p>
 				<p>오늘의 주식 이미지와 뉴스를 확인해보세요</p>
 				<p>(하단 이미지 선택시 상세 이동)</p>
+
 				<p></p>
+
 				<h2>Today Stock Weather</h2>
 				<p class="custom-p">Fear and Greed : [[${feargreed.score}]]([[${feargreed.rating}]])</p>
 
@@ -30,13 +36,21 @@
 
 			<!-- Main -->
 			<section id="main" class="container">
+
 				<section class="box special" th:each="stock : ${stocks}">
+
 					<h2 th:text="${stock.name} + '(' + ${stock.ticker} + ')' + ' : ' + ${stock.date}"></h2>
-					<a th:href="@{/stocks/{stockId}(stockId=${stock.stockId}, date=${stock.date})}"><span class="image featured"><img th:src="@{${stock.imagePath}}" alt="" /></span></a>
+
+					<a th:href="@{/stocks/{stockId}(stockId=${stock.stockId}, date=${stock.date})}">
+						<span class="image featured"><img th:src="@{${stock.imagePath}}" alt="" /></span>
+					</a>
+
 					<audio controls>
 						<source th:src="@{${stock.speechPath}}" type="audio/mpeg">
 					</audio>
+
 				</section>
+
 			</section>
 
 			<th:block th:replace="~{common :: footer}"></th:block>
@@ -46,4 +60,5 @@
 		<th:block th:replace="~{common :: static}"></th:block>
 
 	</body>
+
 </html>

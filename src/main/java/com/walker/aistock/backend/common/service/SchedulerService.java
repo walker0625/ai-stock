@@ -37,7 +37,7 @@ public class SchedulerService {
 
     // TODO 1. DATA update 시점 2. 트래픽 한산한 시점 을 고려하여 시간 조정
     @Transactional
-    @Scheduled(cron = "0 0 6 * * ?") // 매일 새벽 6시(예상 동작 시간 = 종목수*2분)
+    @Scheduled(cron = "0 0 6 * * ?") // 매일 새벽 6시(예상 동작 시간 = 종목수 * 1분 30초(max))
     public void makeTodayStockData() {
 
         log.info("start makeTodayStockData");

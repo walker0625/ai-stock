@@ -4,6 +4,7 @@
 		<title>AI STOCK</title>
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+		<link rel="icon" href="/static/image/favicon.ico">
 	</head>
 	<body class="is-preload">
 		<div id="page-wrapper">
@@ -13,14 +14,14 @@
 				<section id="main" class="container">
 					<header>
 						<h2 th:text="${stock.name} + ' 분석(' + ${stock.ticker} + ')' + ' : ' + ${stock.date}"></h2>
-						<p>오늘의 이미지 / 오늘의 리포트 / 오늘의 브리핑 / 3일간 뉴스 원문</p>
+						<p>오늘의 이미지 / 오늘의 리포트 / 오늘의 브리핑 / 뉴스 원문</p>
 					</header>
 					<div class="box">
 						<h2>오늘의 이미지</h2>
 						<span class="image featured"><img th:src="@{${stock.imagePath}}" alt="" /></span>
 					</div>
 					<div class="box">
-						<h2>오늘의 리포트 - <span><a th:href="@{https://finviz.com/quote.ashx(t=${stock.ticker})}">chart(from finviz)</a></span></h2>
+						<h2>오늘의 리포트 - <span><a th:href="@{https://finviz.com/quote.ashx(t=${stock.ticker})}">chart(finviz)</a></span></h2>
 						<div class="table-wrapper">
 							<table class="alt">
 								<tbody>
@@ -75,7 +76,7 @@
 					<div class="box">
 						<h2>오늘의 브리핑</h2>
 						<span class="image featured"><img src="/image/newsRoom.jpg" alt="" /></span>
-						<h3>Full Speech(Stock analysis + News Script)</h3>
+						<h3>Speech(Stock analysis + News Script)</h3>
 						<audio controls>
 							<source th:src="@{${stock.speechPath}}" type="audio/mpeg">
 						</audio>
@@ -83,7 +84,7 @@
 						<p th:text="${stock.script}"></p>
 					</div>
 					<div class="box">
-						<h2>3일간 뉴스 원문</h2>
+						<h2>뉴스 원문</h2>
 						<table class="alt">
 							<tbody>
 								<tr th:each="news : ${newses}">

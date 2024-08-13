@@ -4,6 +4,7 @@
 		<title>AI STOCK</title>
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+		<link rel="icon" href="/static/image/favicon.ico">
 	</head>
 	<body class="landing is-preload">
 
@@ -13,13 +14,17 @@
 
 			<!-- Banner -->
 			<section id="banner">
-				<h2>AI STOCK</h2>
+				<section class="custom-box">
+					<div class="custom-image-wrapper">
+						<img class="custom-image" th:src="@{/static/image/logo.jpg}"/>
+					</div>
+				</section>
 				<p>Data를 기반으로 AI가 만든</p>
 				<p>오늘의 주식 이미지와 뉴스를 확인해보세요</p>
-				<p>(하단 이미지 클릭시 상세 이동)</p>
+				<p>(하단 이미지 선택시 상세 이동)</p>
 				<p></p>
-				<h3>Today Stock Weather</h3>
-				<p>Fear and Greed : [[${feargreed.score}]]([[${feargreed.rating}]])</p>
+				<h2>Today Stock Weather</h2>
+				<p class="custom-p">Fear and Greed : [[${feargreed.score}]]([[${feargreed.rating}]])</p>
 
 			</section>
 

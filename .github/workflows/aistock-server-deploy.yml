@@ -27,6 +27,6 @@ jobs:
             git pull origin main
             echo "$APPLICATION_PROPERTIES" > src/main/resources/application.yml
             ./gradlew clean build
-            sudo fuser -k -n tcp 8080 || true
+            sudo fuser -k -n tcp 80 || true
             nohup java -Duser.timezone=Asia/Seoul -jar build/libs/*SNAPSHOT.jar > ./output.log 2>&1 &
             

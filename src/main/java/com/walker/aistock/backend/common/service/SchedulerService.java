@@ -26,7 +26,7 @@ public class SchedulerService {
     StockRepository stockRepository;
 
     @Transactional
-    @Scheduled(cron = "0 1 0 * * ?") // 매일 자정 +1분 - 해당 데이터가 없으면 main 화면 nullException
+    @Scheduled(cron = "0 0 0 ? *") // 매일 자정 - 해당 데이터가 없으면 main 화면 nullException
     public void makeFearGreed() {
 
         log.info("start makeFearGreed");
@@ -35,9 +35,8 @@ public class SchedulerService {
 
     }
 
-    // TODO 1. DATA update 시점 2. 트래픽 한산한 시점 을 고려하여 시간 조정
     @Transactional
-    @Scheduled(cron = "0 0 6 * * ?") // 매일 새벽 6시(예상 동작 시간 = 종목수 * 1분 30초(max))
+    @Scheduled(cron = "0 0 6 ? * MON-FRI") // 평일 새벽 6시(예상 동작 시간 = 종목수 * 1분 30초(max))
     public void makeTodayStockData() {
 
         log.info("start makeTodayStockData");

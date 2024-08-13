@@ -70,7 +70,7 @@
 								</tbody>
 							</table>
 							<h3>Stock analysis</h3>
-							<p th:text="${stock.report}"></p>
+							<pre class="custom-pure-text" th:text="${stock.report}"></pre>
 						</div>
 					</div>
 					<div class="box">
@@ -81,14 +81,14 @@
 							<source th:src="@{${stock.speechPath}}" type="audio/mpeg">
 						</audio>
 						<h3>News Script</h3>
-						<p th:text="${stock.script}"></p>
+						<pre class="custom-pure-text" th:text="${stock.script}"></pre>
 					</div>
 					<div class="box">
 						<h2>뉴스 원문</h2>
 						<table class="alt">
 							<tbody>
 								<tr th:each="news : ${newses}">
-									<td><img th:src="${news.image != null ? news.image : '/static/image/news.jpg'}" alt="" width="50" height="50"/></td>
+									<td><img class="custom-image-box-50" th:src="${news.image != null ? news.image : '/static/image/news.jpg'}" alt=""/></td>
 									<td><a th:href="${news.url}" th:text="${news.headline}"></a></td>
 								</tr>
 							</tbody>

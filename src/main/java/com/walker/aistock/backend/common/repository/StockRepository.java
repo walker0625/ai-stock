@@ -16,6 +16,8 @@ public interface StockRepository extends JpaRepository<Stock, Long>, StockCustom
 
     Stock findByTicker(String ticker);
 
+    List<Stock> findAllByOrderByIdDesc();
+
     @Query(
         """
         SELECT new com.walker.aistock.front.dto.res.StockImageSpeechQueryDto(st.id, st.name, st.ticker, ti.imageFileKey, sp.speechFileKey, sp.createdAt)
@@ -52,4 +54,3 @@ public interface StockRepository extends JpaRepository<Stock, Long>, StockCustom
     StockDetailsRes findStockWithDetails(Long stockId, LocalDate selectedDate);
 
 }
-

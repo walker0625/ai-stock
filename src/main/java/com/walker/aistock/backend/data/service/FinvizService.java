@@ -1,6 +1,7 @@
 package com.walker.aistock.backend.data.service;
 
 import com.walker.aistock.backend.data.dto.res.FinvizDetailRes;
+import lombok.extern.slf4j.Slf4j;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -12,6 +13,7 @@ import java.io.IOException;
 import static com.walker.aistock.backend.common.enums.Indicator.*;
 import static com.walker.aistock.backend.common.enums.Url.FINVIZ_DETAIL;
 
+@Slf4j
 @Service
 public class FinvizService {
 
@@ -23,6 +25,7 @@ public class FinvizService {
         try {
             doc = Jsoup.connect(String.format(FINVIZ_DETAIL.getValue(), ticker)).get();
         } catch (IOException e) {
+            log.error("full error text", e);
             throw new RuntimeException(e);
         }
         Elements tdElements = doc.select("tr.table-dark-row").select("td");

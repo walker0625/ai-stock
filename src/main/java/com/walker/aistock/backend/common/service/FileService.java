@@ -41,6 +41,7 @@ public class FileService {
             fos.write(file);
         } catch (IOException e) {
             deleteFile(path);
+            log.error("full error text", e);
             throw new RuntimeException(e);
         }
     }

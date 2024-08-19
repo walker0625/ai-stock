@@ -20,7 +20,6 @@ public class WebConfig implements WebMvcConfigurer {
     @Value("${file.realpath.speech}")
     private String SPEECH_REAL_PATH;
 
-    // TODO 추후 배포 서버의 파일 경로로 변경
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
         // 정적 리소스 핸들러

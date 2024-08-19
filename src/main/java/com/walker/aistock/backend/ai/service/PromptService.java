@@ -17,6 +17,7 @@ import com.walker.aistock.backend.data.dto.res.StockRecommendRes;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -25,6 +26,7 @@ import static com.walker.aistock.backend.common.enums.Prompt.*;
 import static com.walker.aistock.backend.common.enums.PromptTag.QUANTITATIVE_DATA;
 import static com.walker.aistock.backend.common.enums.PromptTag.STOCK_NEWS;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
@@ -39,6 +41,7 @@ public class PromptService {
         try {
             quantitativeData = objectMapper.writeValueAsString(new QuantitativeDataVO(ticker, finvizDetailRes, stockRecommendRes));
         } catch (JsonProcessingException e) {
+            log.error("full error text", e);
             throw new RuntimeException(e);
         }
 
@@ -65,6 +68,7 @@ public class PromptService {
         try {
             stockNewses = objectMapper.writeValueAsString(stockNewsRes);
         } catch (JsonProcessingException e) {
+            log.error("full error text", e);
             throw new RuntimeException(e);
         }
 

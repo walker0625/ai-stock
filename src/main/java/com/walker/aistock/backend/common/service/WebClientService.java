@@ -78,6 +78,7 @@ public class WebClientService {
         try {
             body = objectMapper.writeValueAsString(chatGPTAskReq);
         } catch (JsonProcessingException e) {
+            log.error("full error text", e);
             throw new RuntimeException(e);
         }
 
@@ -99,6 +100,7 @@ public class WebClientService {
         try {
             body = objectMapper.writeValueAsString(chatGPTImageReq);
         } catch (JsonProcessingException e) {
+            log.error("full error text", e);
             throw new RuntimeException(e);
         }
 
@@ -118,6 +120,7 @@ public class WebClientService {
         try {
             body = objectMapper.writeValueAsString(chatGPTSpeechReq);
         } catch (JsonProcessingException e) {
+            log.error(e.getMessage());
             throw new RuntimeException(e);
         }
 

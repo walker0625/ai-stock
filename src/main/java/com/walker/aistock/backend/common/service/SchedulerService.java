@@ -10,11 +10,11 @@ import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Slf4j
-@Component
+@Service
 @EnableScheduling
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 @RequiredArgsConstructor
@@ -41,7 +41,9 @@ public class SchedulerService {
 
         log.info("start makeTodayStockData");
         for (Stock stock : stockRepository.findAll()) {
+            log.info("start stockName : {}", stock.getName());
             chatGPTService.chatGPTAnalysis(stock);
+            log.info("end stockName : {}", stock.getName());
         }
         log.info("end makeTodayStockData");
 

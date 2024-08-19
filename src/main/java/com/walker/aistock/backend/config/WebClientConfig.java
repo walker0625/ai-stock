@@ -47,7 +47,7 @@ public class WebClientConfig {
 				.clientConnector(new ReactorClientHttpConnector(httpClient))
 				.exchangeStrategies(
 					ExchangeStrategies.builder()
-					.codecs(configurer -> configurer.defaultCodecs().maxInMemorySize(10 * 1024 * 1024)) // 5MB(받아오는 이미지/오디오 파일 제한
+					.codecs(configurer -> configurer.defaultCodecs().maxInMemorySize(10 * 1024 * 1024)) // 10MB(받아오는 이미지/오디오 파일 제한)
 					.build()
 				)
 				.clientConnector(new ReactorClientHttpConnector(

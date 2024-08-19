@@ -75,9 +75,8 @@ public class ChatGPTService {
 
         ChatGPTImageRes chatGPTImageRes = chatGPTImage(promptService.makePromptStockImageDraw(newsBriefing));
 
-        // TODO 단순히 자르는게 아니라 내용 자체를 4000자 이내로 요약할 수 있게 변경
+        // TODO 단순히 자르는게 아니라 내용 자체를 speech api 제한 글자인 4000자 이내로 요약할 수 있게 변경
         String speechInput = stockReport + newsBriefing;
-        log.info("speechInput: {}", speechInput);
 
         if (speechInput.length() > 4000) {
             speechInput = speechInput.substring(0, 4000);

@@ -1,6 +1,7 @@
 package com.walker.aistock.front.controller;
 
 import com.walker.aistock.front.service.PresentationService;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
@@ -23,7 +24,10 @@ public class PresentationController {
     PresentationService presentationService;
 
     @RequestMapping("/main")
-    public String home(Model model) {
+    public String home(Model model,
+                       HttpServletRequest request) {
+
+        log.info("main access ip : {}", request.getRemoteAddr());
 
         model.addAttribute("feargreed", presentationService.fearGreed());
         model.addAttribute("stocks", presentationService.stockWithImageAndSpeech());
@@ -34,7 +38,10 @@ public class PresentationController {
     @RequestMapping("/stocks/{stockId}")
     public String stock(@PathVariable String stockId,
                         @RequestParam String date,
+                        HttpServletRequest request,
                         Model model) {
+
+        log.info("stock access ip : {}, stockId : {}, date : {}", request.getRemoteAddr(), stockId, date);
 
         LocalDate selectedDate = LocalDate.parse(date, DateTimeFormatter.ofPattern("yyyy-MM-dd"));
 
@@ -45,7 +52,10 @@ public class PresentationController {
     }
 
     @RequestMapping("/principle")
-    public String principal(Model model) {
+    public String principle(Model model,
+                            HttpServletRequest request) {
+
+        log.info("principle access ip : {}", request.getRemoteAddr());
 
         model.addAttribute("principle", presentationService.principle());
 

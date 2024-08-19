@@ -6,7 +6,7 @@ import org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfi
 import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 
 @EnableJpaAuditing
-@SpringBootApplication(exclude = SecurityAutoConfiguration.class) // TODO 추후 인증 추가시 제거
+@SpringBootApplication
 public class AiStockApplication {
 
     public static void main(String[] args) {

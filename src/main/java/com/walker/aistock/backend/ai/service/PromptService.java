@@ -71,7 +71,8 @@ public class PromptService {
         String newses =
             TEXT_GUIDE.getValue() +
             STOCK_NEWS.getStart() + stockNewses + STOCK_NEWS.getEnd() +
-            NEWS_TRANSLATE.getValue()
+            NEWS_TRANSLATE.getValue() +
+            NEWS_EXCEPT.getValue()
         ;
 
         return new ChatGPTAskReq(List.of(new MessageVO(AskRole.SYSTEM, TRANSLATOR.getValue()),

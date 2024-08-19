@@ -16,7 +16,7 @@ public enum Prompt {
                   " You also a capable investor with a 100 percent yield every year</role> "),
     TRANSLATOR(" <role>You are an expert who has translated English into Korea " +
                      " I have experience with writing a broadcast script, so I can translate it to make it easier to listen to when I voice it</role> "),
-    ARTIST("<role>You are a witty and creative artist. You are professional investor who is well versed in American stocks.</role>"),
+    ARTIST(" <role>You are a witty and creative artist. You are professional investor who is well versed in American stocks.</role> "),
 
     // context
     TEXT_GUIDE(" <textGuide>Please take your time and respond slowly to future responses through sequential logical processes. " +
@@ -31,7 +31,13 @@ public enum Prompt {
                          " Additionally, please provide a short/medium/long term outlook for the stock and tell us your investment strategy accordingly</stockQuestion> "),
     NEWS_TRANSLATE(" <newsTranslate>Make a script and translate " + STOCK_NEWS.getStart() +
                          " into Korean as if the announcer were news</newsTranslate> "),
-    IMAGE_DRAW("<imageDraw>Based on the contents of " + STOCK_NEWS.getStart() + ", please express the situation of the stock in a cute and witty character.</imageDraw>")
+    IMAGE_DRAW(" <imageDraw>Based on the contents of " + STOCK_NEWS.getStart() + ", " +
+                     " please express the situation of the stock in a cute and witty character.</imageDraw> "),
+
+    // etc
+    NEWS_EXCEPT(" <newsExcept>Please remove and provide information similar to the following in the resulting sentence. " +
+                      " 1. All sentences on Zacks.com (introduction, access recommendation, promotion, etc.) " +
+                      " 2. I'm [name], the news presenter.</newsExcept> "),
     ;
 
     private final String value;

@@ -1,5 +1,7 @@
 package com.walker.aistock.backend.common.service;
 
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
@@ -8,11 +10,13 @@ import java.util.Base64;
 
 import static com.walker.aistock.backend.common.enums.FileType.*;
 
+@Slf4j
 @Service
+@RequiredArgsConstructor
 public class FileService {
 
     @Value("${file.realpath.image}")
-    private String IMAGE_REAL_PATH;
+    String IMAGE_REAL_PATH;
 
     @Value("${file.realpath.speech}")
     private String SPEECH_REAL_PATH;

@@ -14,14 +14,14 @@ import java.time.LocalDateTime;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class PresentationFearGreedRes {
 
-    private int score;
-    private String rating;
-    private LocalDateTime updateDateTime;
+    int score;
+    String rating;
+    LocalDateTime updateDateTime;
 
-    private int previousClose;
-    private int previous1Week;
-    private int previous1Month;
-    private int previous1Year;
+    int previousClose;
+    int previous1Week;
+    int previous1Month;
+    int previous1Year;
 
     public PresentationFearGreedRes(FearGreed fearGreed) {
         this.score = fearGreed.getScore();

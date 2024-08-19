@@ -11,11 +11,11 @@ import lombok.experimental.FieldDefaults;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class PresentationNewsRes {
 
-    private String headline;
-    private String summary;
+    String headline;
+    String summary;
 
-    private String image;
-    private String url;
+    String image;
+    String url;
 
     public PresentationNewsRes(News news) {
         this.headline = news.getHeadline();

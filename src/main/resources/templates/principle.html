@@ -1,0 +1,44 @@
+<!DOCTYPE HTML>
+<html>
+
+	<head>
+		<title>AI STOCK</title>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+		<link rel="icon" href="/static/image/favicon.ico">
+	</head>
+
+	<body class="landing is-preload">
+
+		<div id="page-wrapper">
+
+			<th:block th:replace="~{common :: header}"></th:block>
+
+				<section id="main" class="container">
+
+					<header>
+						<h2>투자 원칙</h2>
+					</header>
+
+					<div class="box">
+						<h2>Guru's Saying</h2>
+						<span class="image featured"><img src="/static/image/guru.jpg" alt=""/></span>
+						<audio controls>
+							<source src="/static/audio/guru.mp3" type="audio/mpeg">
+						</audio>
+
+						<p></p>
+
+						<h2>Walker's Principle</h2>
+						<pre class="custom-pure-text" th:text="${principle.content}"></pre>
+					</div>
+				</section>
+
+			<th:block th:replace="~{common :: footer}"></th:block>
+
+		</div>
+
+		<th:block th:replace="~{common :: static}"></th:block>
+
+	</body>
+</html>

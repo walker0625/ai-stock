@@ -26,14 +26,14 @@ public class StockDetailsRes {
 
     String imagePath;
 
-    private Double per;
-    private Double forwardPer;
-    private Double eps;
-    private Double forwardEps;
-    private Double peg;
-    private Double rsi;
-    private Double targetPrice;
-    private Double nowPrice;
+    Double per;
+    Double forwardPer;
+    Double eps;
+    Double forwardEps;
+    Double peg;
+    Double rsi;
+    Double targetPrice;
+    Double nowPrice;
 
     int strongBuy;
     int buy;

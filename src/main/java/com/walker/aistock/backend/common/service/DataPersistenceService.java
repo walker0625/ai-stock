@@ -19,6 +19,7 @@ import com.walker.aistock.backend.data.entity.Recommend;
 import com.walker.aistock.backend.data.repository.IndicatorRepository;
 import com.walker.aistock.backend.data.repository.NewsRepository;
 import com.walker.aistock.backend.data.repository.RecommendRepository;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.transaction.annotation.Transactional;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
@@ -29,6 +30,7 @@ import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)

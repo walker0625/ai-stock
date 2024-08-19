@@ -1,12 +1,10 @@
 package com.walker.aistock.front.service;
 
+import com.walker.aistock.backend.common.repository.PrincipleRepository;
 import com.walker.aistock.backend.common.repository.StockRepository;
 import com.walker.aistock.backend.data.repository.FearGreedRepository;
 import com.walker.aistock.backend.data.repository.NewsRepository;
-import com.walker.aistock.front.dto.res.PresentationFearGreedRes;
-import com.walker.aistock.front.dto.res.PresentationNewsRes;
-import com.walker.aistock.front.dto.res.StockDetailsRes;
-import com.walker.aistock.front.dto.res.StockImageSpeechRes;
+import com.walker.aistock.front.dto.res.*;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
@@ -27,6 +25,7 @@ public class PresentationService {
     FearGreedRepository fearGreedRepository;
     StockRepository stockRepository;
     NewsRepository newsRepository;
+    PrincipleRepository principleRepository;
 
     public PresentationFearGreedRes fearGreed() {
         return new PresentationFearGreedRes(fearGreedRepository.findByCreatedAtToday());
@@ -44,6 +43,11 @@ public class PresentationService {
     public List<PresentationNewsRes> stockWithNewses(Long stockId, LocalDate selectedDate) {
         return newsRepository.findByStockIdAndCreatedAt(stockId, selectedDate, PageRequest.of(0, 7))
                              .stream().map(PresentationNewsRes::new).collect(Collectors.toList());
+    }
+
+    //  TODO 추후 user별로 분리가 필요하면 1L에서 user id로 변경
+    public PrincipleRes principle() {
+        return principleRepository.findById(1L).map(p -> new PrincipleRes(p.getContent())).get();
     }
 
 }

@@ -44,4 +44,12 @@ public class PresentationController {
         return "stock";
     }
 
+    @RequestMapping("/principle")
+    public String principal(Model model) {
+
+        model.addAttribute("principle", presentationService.principle());
+
+        return "principle";
+    }
+
 }

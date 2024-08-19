@@ -16,7 +16,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.ParameterizedTypeReference;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
 
 import java.util.List;
@@ -27,7 +27,7 @@ import static com.walker.aistock.backend.common.enums.Url.*;
 import static com.walker.aistock.backend.common.enums.Url.RAPID_FEARGREED;
 
 @Slf4j
-@Component
+@Service
 @RequiredArgsConstructor
 public class WebClientService {
 

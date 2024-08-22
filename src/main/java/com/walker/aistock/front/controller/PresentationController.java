@@ -1,6 +1,6 @@
 package com.walker.aistock.front.controller;
 
-import com.walker.aistock.backend.common.repository.IpRepository;
+import com.walker.aistock.backend.common.service.AccessService;
 import com.walker.aistock.front.service.PresentationService;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.AccessLevel;
@@ -23,6 +23,7 @@ import java.time.format.DateTimeFormatter;
 public class PresentationController {
 
     PresentationService presentationService;
+    AccessService accessService;
 
     @RequestMapping("/main")
     public String home(Model model,
@@ -32,7 +33,7 @@ public class PresentationController {
 
         log.info("main access ip : {}", ip);
 
-        presentationService.checkIp(ip);
+        accessService.checkIp(ip);
 
         model.addAttribute("feargreed", presentationService.fearGreed());
         model.addAttribute("stocks", presentationService.stockWithImageAndSpeech());

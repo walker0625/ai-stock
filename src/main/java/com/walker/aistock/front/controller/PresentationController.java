@@ -1,5 +1,6 @@
 package com.walker.aistock.front.controller;
 
+import com.walker.aistock.backend.common.repository.IpRepository;
 import com.walker.aistock.front.service.PresentationService;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.AccessLevel;
@@ -27,7 +28,11 @@ public class PresentationController {
     public String home(Model model,
                        HttpServletRequest request) {
 
-        log.info("main access ip : {}", request.getRemoteAddr());
+        String ip = request.getRemoteAddr();
+
+        log.info("main access ip : {}", ip);
+
+        presentationService.checkIp(ip);
 
         model.addAttribute("feargreed", presentationService.fearGreed());
         model.addAttribute("stocks", presentationService.stockWithImageAndSpeech());

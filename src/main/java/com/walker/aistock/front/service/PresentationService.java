@@ -1,5 +1,7 @@
 package com.walker.aistock.front.service;
 
+import com.walker.aistock.backend.common.entity.Ip;
+import com.walker.aistock.backend.common.repository.IpRepository;
 import com.walker.aistock.backend.common.repository.PrincipleRepository;
 import com.walker.aistock.backend.common.repository.StockRepository;
 import com.walker.aistock.backend.data.repository.FearGreedRepository;
@@ -11,6 +13,7 @@ import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -26,6 +29,7 @@ public class PresentationService {
     StockRepository stockRepository;
     NewsRepository newsRepository;
     PrincipleRepository principleRepository;
+    IpRepository ipRepository;
 
     public PresentationFearGreedRes fearGreed() {
         return new PresentationFearGreedRes(fearGreedRepository.findByCreatedAtToday());
@@ -50,4 +54,16 @@ public class PresentationService {
         return principleRepository.findById(1L).map(p -> new PrincipleRes(p.getContent())).get();
     }
 
+    @Transactional
+    public void checkIp(String ip) {
+
+        Ip findedIp = ipRepository.findByIp(ip);
+
+        if (findedIp == null) {
+            ipRepository.save(Ip.create(ip));
+        } else {
+            findedIp.increaseCount();
+        }
+
+    }
 }

@@ -13,6 +13,8 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -37,7 +39,11 @@ public class PresentationService {
     }
 
     public StockDetailsRes stockWithDetails(Long stockId, LocalDate selectedDate) {
-        return stockRepository.findStockWithDetails(stockId, selectedDate);
+        LocalDateTime startDate = LocalDateTime.of(selectedDate, LocalTime.MIN);
+        // LocalTime.MAX로 DB에 쿼리하면 다음날까지 조회되는 이슈 있음
+        LocalDateTime endDate = LocalDateTime.of(selectedDate, LocalTime.of(23, 59, 59, 9999));
+
+        return stockRepository.findStockWithDetails(stockId, startDate, endDate);
     }
 
     public List<PresentationNewsRes> stockWithNewses(Long stockId, LocalDate selectedDate) {

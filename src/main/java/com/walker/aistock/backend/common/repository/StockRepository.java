@@ -8,6 +8,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 // TODO 전체적으로 좀 더 가독성있고 효율적으로 리팩토링 요망
@@ -32,6 +33,7 @@ public interface StockRepository extends JpaRepository<Stock, Long>, StockCustom
     )
     List<StockImageSpeechQueryDto> findStocksWithImagesAndSpeechesBetweenThreeDays(LocalDate twoDaysAgo, LocalDate today);
 
+    // index 활용을 위해 Date 함수를 Between으로 변경
     @Query(
         """
         SELECT st
@@ -43,14 +45,14 @@ public interface StockRepository extends JpaRepository<Stock, Long>, StockCustom
         JOIN FETCH st.speeches sp
         JOIN FETCH st.newsBriefings nb
         WHERE st.id = :stockId
-        AND FUNCTION('DATE', ti.createdAt) = :selectedDate
-        AND FUNCTION('DATE', ii.createdAt) = :selectedDate
-        AND FUNCTION('DATE', rc.createdAt) = :selectedDate
-        AND FUNCTION('DATE', re.createdAt) = :selectedDate
-        AND FUNCTION('DATE', sp.createdAt) = :selectedDate
-        AND FUNCTION('DATE', nb.createdAt) = :selectedDate
+        AND ti.createdAt BETWEEN :startDate AND :endDate
+        AND ii.createdAt BETWEEN :startDate AND :endDate
+        AND rc.createdAt BETWEEN :startDate AND :endDate
+        AND re.createdAt BETWEEN :startDate AND :endDate
+        AND sp.createdAt BETWEEN :startDate AND :endDate
+        AND nb.createdAt BETWEEN :startDate AND :endDate
         """
     )
-    StockDetailsRes findStockWithDetails(Long stockId, LocalDate selectedDate);
+    StockDetailsRes findStockWithDetails(Long stockId, LocalDateTime startDate, LocalDateTime endDate);
 
 }

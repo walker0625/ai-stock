@@ -5,11 +5,13 @@ import com.walker.aistock.backend.common.enums.FileType;
 import com.walker.aistock.backend.data.entity.Indicator;
 import com.walker.aistock.backend.data.entity.Recommend;
 import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.FieldDefaults;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 import static com.walker.aistock.backend.common.enums.FilePath.IMAGE_SRC_PATH;
 import static com.walker.aistock.backend.common.enums.FilePath.SPEECH_SRC_PATH;
@@ -49,36 +51,38 @@ public class StockDetailsRes {
 
     LocalDate date;
 
-    public StockDetailsRes(Stock stock) {
-        this.stockId = stock.getId();
-        this.name = stock.getName();
-        this.ticker = stock.getTicker();
+    public StockDetailsRes(Long stockId, String name, String ticker,
+                           Double per, Double forwardPer, Double eps, Double forwardEps, Double peg, Double rsi, Double targetPrice, Double nowPrice, LocalDateTime date,
+                           int strongBuy, int buy, int hold, int sell, int strongSell,
+                           String reportContent, String imageFileKey, String speechFileKey, String script) {
 
-        this.imagePath = IMAGE_SRC_PATH.getValue() + stock.getTodayImages().iterator().next().getImageFileKey() + JPG.getValue();
+        this.stockId = stockId;
+        this.name = name;
+        this.ticker = ticker;
 
-        Indicator indicator = stock.getIndicators().iterator().next();
-        this.per = indicator.getPer();
-        this.forwardPer = indicator.getForwardPer();
-        this.eps = indicator.getEps();
-        this.forwardEps = indicator.getForwardEps();
-        this.peg = indicator.getPeg();
-        this.rsi = indicator.getRsi();
-        this.targetPrice = indicator.getTargetPrice();
-        this.nowPrice = indicator.getNowPrice();
-        this.date = indicator.getCreatedAt().toLocalDate();
+        this.per = per;
+        this.forwardPer = forwardPer;
+        this.eps = eps;
+        this.forwardEps = forwardEps;
+        this.peg = peg;
+        this.rsi = rsi;
+        this.targetPrice = targetPrice;
+        this.nowPrice = nowPrice;
+        this.date = date.toLocalDate();
 
-        Recommend recommend = stock.getRecommends().iterator().next();
-        this.strongBuy = recommend.getStrongBuy();
-        this.buy = recommend.getBuy();
-        this.hold = recommend.getHold();
-        this.sell = recommend.getSell();
-        this.strongSell = recommend.getStrongSell();
+        this.strongBuy = strongBuy;
+        this.buy = buy;
+        this.hold = hold;
+        this.sell = sell;
+        this.strongSell = strongSell;
 
-        this.report = stock.getReports().iterator().next().getContent().replaceAll("[#*]", "");
+        this.report = reportContent.replaceAll("[#*]", "");
 
-        this.speechPath = SPEECH_SRC_PATH.getValue() + stock.getSpeeches().iterator().next().getSpeechFileKey() + MP3.getValue();
+        this.imagePath = IMAGE_SRC_PATH.getValue() + imageFileKey + JPG.getValue();
 
-        this.script = stock.getNewsBriefings().iterator().next().getScript();
+        this.speechPath = SPEECH_SRC_PATH.getValue() + speechFileKey + MP3.getValue();
+
+        this.script = script;
     }
 
 }

@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 import lombok.experimental.FieldDefaults;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 import static com.walker.aistock.backend.common.enums.FilePath.IMAGE_SRC_PATH;
 import static com.walker.aistock.backend.common.enums.FilePath.SPEECH_SRC_PATH;
@@ -25,13 +26,13 @@ public class StockImageSpeechRes {
     String speechPath;
     LocalDate date;
 
-    public StockImageSpeechRes(StockImageSpeechQueryDto queryDto) {
-        this.stockId = queryDto.getStockId();
-        this.name = queryDto.getName();
-        this.ticker = queryDto.getTicker();
-        this.imagePath = IMAGE_SRC_PATH.getValue() + queryDto.getImageFileKey() + JPG.getValue();
-        this.speechPath = SPEECH_SRC_PATH.getValue() + queryDto.getSpeechFileKey() + MP3.getValue();
-        this.date = queryDto.getSpeechCreatedAt().toLocalDate();
+    public StockImageSpeechRes(Long stockId, String name, String ticker, String imageFileKey, String speechFileKey, LocalDateTime date) {
+        this.stockId = stockId;
+        this.name = name;
+        this.ticker = ticker;
+        this.imagePath = IMAGE_SRC_PATH.getValue() + imageFileKey + JPG.getValue();
+        this.speechPath = SPEECH_SRC_PATH.getValue() + speechFileKey + MP3.getValue();
+        this.date = date.toLocalDate();
     }
 
 }

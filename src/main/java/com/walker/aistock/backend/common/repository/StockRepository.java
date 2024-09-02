@@ -3,6 +3,7 @@ package com.walker.aistock.backend.common.repository;
 import com.walker.aistock.backend.common.entity.Stock;
 import com.walker.aistock.front.dto.res.StockImageSpeechQueryDto;
 import com.walker.aistock.front.dto.res.StockDetailsRes;
+import com.walker.aistock.front.dto.res.StockImageSpeechRes;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
@@ -11,7 +12,6 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
-// TODO 전체적으로 좀 더 가독성있고 효율적으로 리팩토링 요망
 @Repository
 public interface StockRepository extends JpaRepository<Stock, Long>, StockCustomRepository {
 
@@ -21,7 +21,11 @@ public interface StockRepository extends JpaRepository<Stock, Long>, StockCustom
 
     @Query(
         """
-        SELECT new com.walker.aistock.front.dto.res.StockImageSpeechQueryDto(st.id, st.name, st.ticker, ti.imageFileKey, sp.speechFileKey, sp.createdAt)
+        SELECT new com.walker.aistock.front.dto.res.StockImageSpeechRes(
+            st.id, st.name, st.ticker,
+            ti.imageFileKey,
+            sp.speechFileKey, sp.createdAt
+        )
         FROM Stock st
         JOIN st.todayImages ti
         JOIN st.speeches sp
@@ -31,26 +35,27 @@ public interface StockRepository extends JpaRepository<Stock, Long>, StockCustom
         ORDER BY sp.createdAt DESC
         """
     )
-    List<StockImageSpeechQueryDto> findStocksWithImagesAndSpeechesBetweenThreeDays(LocalDate twoDaysAgo, LocalDate today);
+    List<StockImageSpeechRes> findStocksWithImagesAndSpeechesBetweenThreeDays(LocalDate twoDaysAgo, LocalDate today);
 
-    // index 활용을 위해 Date 함수를 Between으로 변경
     @Query(
         """
-        SELECT st
+        SELECT new com.walker.aistock.front.dto.res.StockDetailsRes(
+            st.id, st.name, st.ticker,
+            ii.per, ii.forwardPer, ii.eps, ii.forwardEps, ii.peg, ii.rsi, ii.targetPrice, ii.nowPrice, ii.createdAt,
+            rc.strongBuy, rc.buy, rc.hold, rc.sell, rc.strongSell,
+            re.content,
+            ti.imageFileKey,
+            sp.speechFileKey,
+            nb.script
+        )
         FROM Stock st
-        JOIN FETCH st.todayImages ti
-        JOIN FETCH st.indicators ii
-        JOIN FETCH st.recommends rc
-        JOIN FETCH st.reports re
-        JOIN FETCH st.speeches sp
-        JOIN FETCH st.newsBriefings nb
+        JOIN st.indicators ii ON ii.createdAt BETWEEN :startDate AND :endDate
+        JOIN st.todayImages ti ON ti.createdAt BETWEEN :startDate AND :endDate
+        JOIN st.recommends rc ON rc.createdAt BETWEEN :startDate AND :endDate
+        JOIN st.reports re ON re.createdAt BETWEEN :startDate AND :endDate
+        JOIN st.speeches sp ON sp.createdAt BETWEEN :startDate AND :endDate
+        JOIN st.newsBriefings nb ON nb.createdAt BETWEEN :startDate AND :endDate
         WHERE st.id = :stockId
-        AND ti.createdAt BETWEEN :startDate AND :endDate
-        AND ii.createdAt BETWEEN :startDate AND :endDate
-        AND rc.createdAt BETWEEN :startDate AND :endDate
-        AND re.createdAt BETWEEN :startDate AND :endDate
-        AND sp.createdAt BETWEEN :startDate AND :endDate
-        AND nb.createdAt BETWEEN :startDate AND :endDate
         """
     )
     StockDetailsRes findStockWithDetails(Long stockId, LocalDateTime startDate, LocalDateTime endDate);

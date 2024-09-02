@@ -13,9 +13,7 @@ import lombok.experimental.FieldDefaults;
 import org.hibernate.annotations.Comment;
 import org.hibernate.annotations.DynamicUpdate;
 
-import java.util.HashSet;
-import java.util.LinkedHashSet;
-import java.util.Set;
+import java.util.*;
 
 @Entity
 @Getter
@@ -37,33 +35,32 @@ public class Stock extends BaseTime {
     @Comment("기호")
     String ticker;
 
-    // MultipleBagFetchException 문제로 인하여 List > Set 으로 변경
     @OneToMany(mappedBy = "stock")
-    Set<Indicator> indicators = new LinkedHashSet<>();
+    List<Indicator> indicators = new ArrayList<>();
 
     @OneToMany(mappedBy = "stock")
-    Set<Recommend> recommends = new LinkedHashSet<>();
+    List<Recommend> recommends = new ArrayList<>();
 
     @OneToMany(mappedBy = "stock")
-    Set<News> newses = new LinkedHashSet<>();
+    List<News> newses = new ArrayList<>();
 
     @OneToMany(mappedBy = "stock")
-    Set<Report> reports = new LinkedHashSet<>();
+    List<Report> reports = new ArrayList<>();
 
     @OneToMany(mappedBy = "stock")
-    Set<NewsBriefing> newsBriefings = new LinkedHashSet<>();
+    List<NewsBriefing> newsBriefings = new ArrayList<>();
 
     @OneToMany(mappedBy = "stock")
-    Set<Speech> speeches = new LinkedHashSet<>();
+    List<Speech> speeches = new ArrayList<>();
 
     @OneToMany(mappedBy = "stock")
-    Set<TodayImage> todayImages = new LinkedHashSet<>();
+    List<TodayImage> todayImages = new ArrayList<>();
 
     @Builder
     public Stock(Long id, String name, String ticker,
-                 Set<Indicator> indicators, Set<Recommend> recommends,
-                 Set<News> newses, Set<Report> reports, Set<NewsBriefing> newsBriefings,
-                 Set<Speech> speeches, Set<TodayImage> todayImages) {
+                 List<Indicator> indicators, List<Recommend> recommends,
+                 List<News> newses, List<Report> reports, List<NewsBriefing> newsBriefings,
+                 List<Speech> speeches, List<TodayImage> todayImages) {
         this.id = id;
         this.name = name;
         this.ticker = ticker;

@@ -30,7 +30,12 @@ public class ChatGPTController {
 
     @GetMapping("/analysis")
     public String chatGPTAnalysis(String ticker) {
-        return chatGPTService.chatGPTAnalysis(stockRepository.findByTicker(ticker));
+
+        log.info("start analysis {}", ticker);
+        String result = chatGPTService.chatGPTAnalysis(stockRepository.findByTicker(ticker));
+        log.info("end analysis {}", ticker);
+
+        return result;
     }
 
     @PostMapping("/image")

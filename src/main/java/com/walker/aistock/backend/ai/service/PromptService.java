@@ -85,6 +85,11 @@ public class PromptService {
 
     public ChatGPTImageReq makePromptStockImageDraw(String newses) {
 
+        // TODO 단순히 자르는게 아니라 내용 자체를 3500자 이내로 요약할 수 있게 변경
+        if (newses.length() > 3500) {
+            newses = newses.substring(0, 3500);
+        }
+
         String imagePrompt =
             ARTIST.getValue() +
             STOCK_NEWS.getStart() + newses + STOCK_NEWS.getEnd() +

@@ -25,7 +25,6 @@ public class SchedulerService {
 
     StockRepository stockRepository;
 
-    @Transactional
     @Scheduled(cron = "0 0 0 * * ?") // 매일 자정 - 해당 데이터가 없으면 main 화면 nullException
     public void makeFearGreed() {
 
@@ -35,7 +34,6 @@ public class SchedulerService {
 
     }
 
-    @Transactional
     @Scheduled(cron = "0 0 6 * * ?") // 매일 새벽 6시(예상 동작 시간 = 종목수 * 1분 30초(max))
     public void makeTodayStockData() {
 

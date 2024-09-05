@@ -53,6 +53,7 @@ public class ChatGPTService {
         stockRepository.save(new Stock(nameAndTicker.split(":")[0], nameAndTicker.split(":")[1]));
     }
 
+    // TODO transaction 효율화 고민(1. 시간이 소요되는 api 요청들과 transaction 혼재 2. 자식 transaction 중 하나라도 실패하면 전체 rollback 상태)
     @Transactional
     public String chatGPTAnalysis(Stock stock) {
 

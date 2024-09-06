@@ -38,7 +38,7 @@ public class SchedulerService {
     public void makeTodayStockData() {
 
         log.info("start makeTodayStockData");
-        for (Stock stock : stockRepository.findAllByOrderByIdDesc()) {
+        for (Stock stock : stockRepository.findAllByIsActiveTrueOrderByIdDesc()) {
             log.info("start stockName : {}", stock.getName());
             chatGPTService.chatGPTAnalysis(stock);
             log.info("end stockName : {}", stock.getName());

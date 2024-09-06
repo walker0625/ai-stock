@@ -35,6 +35,9 @@ public class Stock extends BaseTime {
     @Comment("기호")
     String ticker;
 
+    @Comment("활성화 여부")
+    boolean isActive;
+
     @OneToMany(mappedBy = "stock")
     List<Indicator> indicators = new ArrayList<>();
 
@@ -57,13 +60,14 @@ public class Stock extends BaseTime {
     List<TodayImage> todayImages = new ArrayList<>();
 
     @Builder
-    public Stock(Long id, String name, String ticker,
+    public Stock(Long id, String name, String ticker, boolean isActive,
                  List<Indicator> indicators, List<Recommend> recommends,
                  List<News> newses, List<Report> reports, List<NewsBriefing> newsBriefings,
                  List<Speech> speeches, List<TodayImage> todayImages) {
         this.id = id;
         this.name = name;
         this.ticker = ticker;
+        this.isActive = isActive;
         this.indicators = indicators;
         this.recommends = recommends;
         this.newses = newses;
@@ -73,9 +77,10 @@ public class Stock extends BaseTime {
         this.todayImages = todayImages;
     }
 
-    public Stock(String name, String ticker) {
+    public Stock(String name, String ticker, boolean isActive) {
         this.name = name;
         this.ticker = ticker;
+        this.isActive = isActive;
     }
 
 }

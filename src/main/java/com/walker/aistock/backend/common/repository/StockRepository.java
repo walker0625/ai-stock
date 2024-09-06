@@ -1,7 +1,6 @@
 package com.walker.aistock.backend.common.repository;
 
 import com.walker.aistock.backend.common.entity.Stock;
-import com.walker.aistock.front.dto.res.StockImageSpeechQueryDto;
 import com.walker.aistock.front.dto.res.StockDetailsRes;
 import com.walker.aistock.front.dto.res.StockImageSpeechRes;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -17,7 +16,7 @@ public interface StockRepository extends JpaRepository<Stock, Long>, StockCustom
 
     Stock findByTicker(String ticker);
 
-    List<Stock> findAllByOrderByIdDesc();
+    List<Stock> findAllByIsActiveTrueOrderByIdDesc();
 
     @Query(
         """

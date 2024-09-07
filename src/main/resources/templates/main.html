@@ -39,7 +39,7 @@
 
 				<section class="box special" th:each="stock : ${stocks}">
 
-					<h2 th:text="${stock.name} + '(' + ${stock.ticker} + ')' + ' : ' + ${stock.date}"></h2>
+					<h2 th:text="${stock.name} + ' : ' + ${stock.date}"></h2>
 
 					<a th:href="@{/stocks/{stockId}(stockId=${stock.stockId}, date=${stock.date})}">
 						<span class="image featured"><img th:src="@{${stock.imagePath}}" alt="" /></span>

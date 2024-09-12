@@ -17,6 +17,7 @@ public class AccessService {
 
     IpRepository ipRepository;
 
+    @Transactional
     public void checkIp(String ip) {
 
         Ip findedIp = ipRepository.findByIp(ip);

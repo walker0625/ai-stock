@@ -46,14 +46,13 @@ public class ChatGPTService {
 
     StockRepository stockRepository;
 
+    // TODO transaction 효율화 고민(1. 시간이 소요되는 api 요청들과 transaction 혼재 2. 자식 transaction 중 하나라도 실패하면 전체 rollback 상태)
     public void addStock(String keyword) {
         String nameAndTicker = webClientService.chatGPTAsk(new ChatGPTAskReq(AskModel.GPT4_MINI, // 단순 질문은 가벼운 model 사용
                 List.of(new MessageVO(AskRole.USER, String.format(TICKER.getValue(), keyword)))));
 
         stockRepository.save(new Stock(nameAndTicker.split(":")[0], nameAndTicker.split(":")[1], true));
     }
-
-    // TODO transaction 효율화 고민(1. 시간이 소요되는 api 요청들과 transaction 혼재 2. 자식 transaction 중 하나라도 실패하면 전체 rollback 상태)
     @Transactional
     public String chatGPTAnalysis(Stock stock) {
 

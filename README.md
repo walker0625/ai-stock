@@ -17,3 +17,7 @@
 </br>
 
 ![aistock_erd](https://github.com/user-attachments/assets/68f25724-2a03-402a-adc7-89e169819937)
+
+</br>
+
+![IMG_2124](https://github.com/user-attachments/assets/0c5c6e4a-e90b-4e3d-9bf5-3741534238d4)

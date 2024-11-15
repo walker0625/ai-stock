@@ -12,10 +12,6 @@
 
 </br>
 
-http://ai-stock.duckdns.org/main : **모바일 접속 권장**(모바일웹 최적화)
-
-</br>
-
 ![AI-STOCK](https://github.com/user-attachments/assets/21021dab-55b7-4869-9ddf-932786183e9a)
 
 </br>

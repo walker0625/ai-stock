@@ -47,7 +47,7 @@ public class DataPersistenceService {
     SpeechRepository speechRepository;
     TodayImageRepository todayImageRepository;
 
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     public void saveSourceDatas(FinvizDetailRes finvizDetailRes, StockRecommendRes stockRecommendRes, List<StockNewsRes> stockNewsRes, Stock stock) {
 
         indicatorRepository.save(Indicator.create(finvizDetailRes, stock));
@@ -55,14 +55,14 @@ public class DataPersistenceService {
         newsRepository.saveAll(stockNewsRes.stream().map(n -> News.create(n, stock)).collect(Collectors.toList()));
     }
 
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     public void saveGeneratedTexts(String stockReport, String newsBriefing, Stock stock) {
 
         reportRepository.save(Report.create(stockReport, stock));
         newsBriefingRepository.save(NewsBriefing.create(newsBriefing, stock));
     }
 
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     public void saveGeneratedFiles(ChatGPTImageRes chatGPTImageRes, byte[] speechBinary, Stock stock) {
 
         String imageFileKey = UUID.randomUUID().toString();

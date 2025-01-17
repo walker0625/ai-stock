@@ -17,7 +17,7 @@ public class AccessService {
 
     IpRepository ipRepository;
 
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     public void checkIp(String ip) {
 
         Ip findedIp = ipRepository.findByIp(ip);

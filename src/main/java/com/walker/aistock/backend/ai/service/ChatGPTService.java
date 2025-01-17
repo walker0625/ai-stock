@@ -53,7 +53,8 @@ public class ChatGPTService {
 
         stockRepository.save(new Stock(nameAndTicker.split(":")[0], nameAndTicker.split(":")[1], true));
     }
-    @Transactional
+
+    @Transactional(rollbackFor = Exception.class)
     public String chatGPTAnalysis(Stock stock) {
 
         String ticker = stock.getTicker();
@@ -62,6 +63,7 @@ public class ChatGPTService {
         FinvizDetailRes finvizDetailRes = finvizService.scrapingFinviz(ticker);
 
         StockRecommendRes stockRecommendRes = finnhubService.stockRecommend(new StockRecommendReq(ticker));
+
         // TODO news에 대한 데이터는 좀 더 세부적인 내용이 있는 Source 찾아서 대체 요망
         List<StockNewsRes> stockNewsRes = finnhubService.stockNews(new StockNewsReq(ticker, now().minusDays(1).toString(), now().toString()));
 

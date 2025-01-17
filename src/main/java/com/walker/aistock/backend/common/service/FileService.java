@@ -16,7 +16,7 @@ import static com.walker.aistock.backend.common.enums.FileType.*;
 public class FileService {
 
     @Value("${file.realpath.image}")
-    String IMAGE_REAL_PATH;
+    private String IMAGE_REAL_PATH;
 
     @Value("${file.realpath.speech}")
     private String SPEECH_REAL_PATH;

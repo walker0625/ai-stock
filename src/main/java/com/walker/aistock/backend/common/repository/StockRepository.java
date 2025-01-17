@@ -5,12 +5,14 @@ import com.walker.aistock.front.dto.res.StockDetailsRes;
 import com.walker.aistock.front.dto.res.StockImageSpeechRes;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
+// TODO 빌드 환경이나 JPA 버전에 따라 파라미터 추론이 불가한 경우가 있어 @Param 추가하는 것 권장
 @Repository
 public interface StockRepository extends JpaRepository<Stock, Long>, StockCustomRepository {
 
@@ -34,7 +36,7 @@ public interface StockRepository extends JpaRepository<Stock, Long>, StockCustom
         ORDER BY sp.createdAt DESC
         """
     )
-    List<StockImageSpeechRes> findStocksWithImagesAndSpeechesBetweenThreeDays(LocalDate twoDaysAgo, LocalDate today);
+    List<StockImageSpeechRes> findStocksWithImagesAndSpeechesBetweenThreeDays(@Param("twoDaysAgo") LocalDate twoDaysAgo, @Param("today") LocalDate today);
 
     @Query(
         """
@@ -57,6 +59,6 @@ public interface StockRepository extends JpaRepository<Stock, Long>, StockCustom
         WHERE st.id = :stockId
         """
     )
-    StockDetailsRes findStockWithDetails(Long stockId, LocalDateTime startDate, LocalDateTime endDate);
+    StockDetailsRes findStockWithDetails(@Param("stockId") Long stockId, @Param("startDate") LocalDateTime startDate, @Param("endDate") LocalDateTime endDate);
 
 }

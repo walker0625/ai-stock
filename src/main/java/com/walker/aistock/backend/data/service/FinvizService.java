@@ -59,7 +59,17 @@ public class FinvizService {
     }
 
     private Double getValue(Element td) {
-      return Double.parseDouble(td.nextElementSibling().select("b").text());
+
+        String text = td.nextElementSibling().select("b").text();
+
+        Double value;
+        try {
+            value = Double.parseDouble(text);
+        } catch (NumberFormatException e) { // "-" 과 같은 형태로 주어지는 경우 예외처리
+            value = null;
+        }
+
+        return value;
     }
 
 }

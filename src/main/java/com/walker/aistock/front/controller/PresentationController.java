@@ -9,12 +9,9 @@ import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 
 @Slf4j
 @Controller
@@ -25,7 +22,7 @@ public class PresentationController {
     PresentationService presentationService;
     AccessService accessService;
 
-    @RequestMapping("/main")
+    @GetMapping("/main")
     public String home(Model model,
                        HttpServletRequest request) {
 
@@ -41,7 +38,7 @@ public class PresentationController {
         return "main";
     }
 
-    @RequestMapping("/stocks/{stockId}")
+    @GetMapping("/stocks/{stockId}")
     public String stock(@PathVariable String stockId,
                         @RequestParam String date,
                         HttpServletRequest request,
@@ -49,15 +46,13 @@ public class PresentationController {
 
         log.info("stock access ip : {}, stockId : {}, date : {}", request.getRemoteAddr(), stockId, date);
 
-        LocalDate selectedDate = LocalDate.parse(date, DateTimeFormatter.ofPattern("yyyy-MM-dd"));
-
-        model.addAttribute("stock", presentationService.stockWithDetails(Long.parseLong(stockId), selectedDate));
-        model.addAttribute("newses", presentationService.stockWithNewses(Long.parseLong(stockId), selectedDate));
+        model.addAttribute("stock", presentationService.stockWithDetails(stockId, date));
+        model.addAttribute("newses", presentationService.stockWithNewses(stockId, date));
 
         return "stock";
     }
 
-    @RequestMapping("/principle")
+    @GetMapping("/principle")
     public String principle(Model model,
                             HttpServletRequest request) {
 

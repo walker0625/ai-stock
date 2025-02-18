@@ -9,6 +9,9 @@ import org.springframework.data.redis.cache.RedisCacheConfiguration;
 import org.springframework.data.redis.cache.RedisCacheManager;
 import org.springframework.data.redis.cache.RedisCacheWriter;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
+import org.springframework.data.redis.connection.RedisStandaloneConfiguration;
+import org.springframework.data.redis.connection.lettuce.LettuceClientConfiguration;
+import org.springframework.data.redis.connection.lettuce.LettuceConnectionFactory;
 import org.springframework.data.redis.serializer.Jackson2JsonRedisSerializer;
 import org.springframework.data.redis.serializer.RedisSerializationContext;
 
@@ -20,6 +23,20 @@ import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 @Configuration
 @EnableCaching
 public class RedisConfig {
+
+    // TODO yml 설정 적용 안되는 이슈 해결되면 yml로 통일(yml로는 ssl 설정이 적용되지 못함)
+    @Bean
+    public RedisConnectionFactory redisConnectionFactory() {
+        RedisStandaloneConfiguration config = new RedisStandaloneConfiguration();
+        config.setHostName("j2025-redis-ejj1pd.serverless.apn2.cache.amazonaws.com");
+        config.setPort(6379);
+
+        LettuceClientConfiguration clientConfig = LettuceClientConfiguration.builder()
+            .useSsl()  // 중요: SSL 활성화(엘라스틱 캐시는 tsl/ssl 연결만 가능!)
+            .build();
+
+        return new LettuceConnectionFactory(config, clientConfig);
+    }
 
     private Jackson2JsonRedisSerializer<Object> jackson2JsonRedisSerializer() {
 

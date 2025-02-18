@@ -3,7 +3,7 @@ name: AI Stock Server Deploy
 on:
   push:
     branches:
-      - main
+      - dev
 
 jobs:
 
@@ -24,7 +24,7 @@ jobs:
           script: |
             cd /home/ubuntu/ai-stock
             rm -rf src/main/resources/application.yml
-            git pull origin main
+            git pull origin dev
             echo "$APPLICATION_PROPERTIES" > src/main/resources/application.yml
             ./gradlew clean build
             sudo fuser -k -n tcp 80 || true

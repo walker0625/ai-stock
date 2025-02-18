@@ -1,5 +1,7 @@
 package com.walker.aistock.backend.common.service;
 
+import java.util.Optional;
+
 import com.walker.aistock.backend.ai.service.ChatGPTService;
 import com.walker.aistock.backend.common.entity.Stock;
 import com.walker.aistock.backend.common.repository.StockRepository;
@@ -8,10 +10,11 @@ import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
+
+import org.springframework.cache.CacheManager;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 @Slf4j
 @Service
@@ -24,6 +27,8 @@ public class SchedulerService {
     ChatGPTService chatGPTService;
 
     StockRepository stockRepository;
+
+    CacheManager cacheManager;
 
     @Scheduled(cron = "0 0 0 * * ?") // 매일 자정 - 해당 데이터가 없으면 main 화면 nullException
     public void makeFearGreed() {
@@ -45,6 +50,12 @@ public class SchedulerService {
         }
         log.info("end makeTodayStockData");
 
+        // 0~6시 사이에 생긴 cache 삭제
+        Optional.ofNullable(cacheManager.getCache("stockList"))
+            .ifPresent(cache -> {
+                cache.clear();
+                log.info("stockListCache clear");
+            });
     }
 
 }

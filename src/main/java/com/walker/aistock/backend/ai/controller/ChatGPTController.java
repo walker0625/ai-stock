@@ -1,5 +1,7 @@
 package com.walker.aistock.backend.ai.controller;
 
+import java.util.Optional;
+
 import com.walker.aistock.backend.ai.dto.req.ChatGPTAskReq;
 import com.walker.aistock.backend.ai.dto.req.ChatGPTImageReq;
 import com.walker.aistock.backend.ai.dto.req.ChatGPTSpeechReq;
@@ -10,6 +12,8 @@ import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
+
+import org.springframework.cache.CacheManager;
 import org.springframework.web.bind.annotation.*;
 
 @Slf4j
@@ -23,6 +27,8 @@ public class ChatGPTController {
 
     StockRepository stockRepository;
 
+    CacheManager cacheManager;
+
     @GetMapping("/stock")
     public void addStock(String keyword) {
         chatGPTService.addStock(keyword);
@@ -34,6 +40,12 @@ public class ChatGPTController {
         log.info("start analysis {}", ticker);
         String result = chatGPTService.chatGPTAnalysis(stockRepository.findByTicker(ticker));
         log.info("end analysis {}", ticker);
+
+        Optional.ofNullable(cacheManager.getCache("stockList"))
+            .ifPresent(cache -> {
+                cache.clear();
+                log.info("stockListCache clear");
+            });
 
         return result;
     }

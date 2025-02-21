@@ -1,6 +1,5 @@
 package com.walker.aistock.front.dto.res;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import com.walker.aistock.backend.data.entity.FearGreed;
 import lombok.AccessLevel;
 import lombok.Data;

@@ -9,12 +9,15 @@ import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
+
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -29,30 +32,55 @@ public class PresentationService {
     NewsRepository newsRepository;
     PrincipleRepository principleRepository;
 
+    @Cacheable(
+        value = "fearGreed",
+        key = "'date:' + T(java.time.LocalDate).now().format(T(java.time.format.DateTimeFormatter).ofPattern('yyyy-MM-dd'))"
+    )
     public PresentationFearGreedRes fearGreed() {
         return new PresentationFearGreedRes(fearGreedRepository.findByCreatedAtToday());
     }
 
+    @Cacheable(
+        value = "stockList",
+        key = "'stock_list:date:' + T(java.time.LocalDate).now().format(T(java.time.format.DateTimeFormatter).ofPattern('yyyy-MM-dd'))"
+    )
     public List<StockImageSpeechRes> stockWithImageAndSpeech() {
         return stockRepository.findStocksWithImagesAndSpeechesBetweenThreeDays(LocalDate.now().minusDays(2), LocalDate.now());
     }
 
-    public StockDetailsRes stockWithDetails(Long stockId, LocalDate selectedDate) {
+    @Cacheable(
+        value = "stockDetail",
+        key = "'stock_detail:stock_id:' + #stockId + ':date:' + #date"
+    )
+    public StockDetailsRes stockWithDetails(String stockId, String date) {
+
+        LocalDate selectedDate = LocalDate.parse(date, DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+
         LocalDateTime startDate = LocalDateTime.of(selectedDate, LocalTime.MIN);
         // LocalTime.MAX로 DB에 쿼리하면 다음날까지 조회되는 이슈 있음
         LocalDateTime endDate = LocalDateTime.of(selectedDate, LocalTime.of(23, 59, 59, 9999));
 
-        return stockRepository.findStockWithDetails(stockId, startDate, endDate);
+        return stockRepository.findStockWithDetails(Long.parseLong(stockId), startDate, endDate);
     }
 
-    public List<PresentationNewsRes> stockWithNewses(Long stockId, LocalDate selectedDate) {
-        return newsRepository.findByStockIdAndCreatedAt(stockId, selectedDate, PageRequest.of(0, 7))
+    @Cacheable(
+        value = "stockNews",
+        key = "'stock_news:stock_id:' + #stockId + ':date:' + #date"
+    )
+    public List<PresentationNewsRes> stockWithNewses(String stockId, String date) {
+
+        LocalDate selectedDate = LocalDate.parse(date, DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+
+        return newsRepository.findByStockIdAndCreatedAt(Long.parseLong(stockId), selectedDate, PageRequest.of(0, 7))
                              .stream().map(PresentationNewsRes::new).collect(Collectors.toList());
     }
 
-    //  TODO 추후 user별로 분리가 필요하면 1L에서 user id로 변경
+    @Cacheable(
+        value = "investingPrinciple", // TTL ZERO(principle)
+        key = "'investing_principle'"
+    )
     public PrincipleRes principle() {
-        return principleRepository.findById(1L).map(p -> new PrincipleRes(p.getContent())).get();
+        return principleRepository.findById(1L).map(p -> new PrincipleRes(p.getContent())).get(); // TODO 추후 user별로 분리가 필요하면 1L에서 user id로 변경
     }
 
 }

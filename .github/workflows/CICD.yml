@@ -67,7 +67,7 @@ jobs:
           fi
 
       - name: Docker compose
-        uses: appleboy/ssh-action@master
+        uses: appleboy/ssh-action@v1.0.3
         with:
           username: ${{ secrets.EC2_USERNAME }}
           host: ${{ secrets.EC2_HOST }}

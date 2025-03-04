@@ -66,7 +66,7 @@ jobs:
             exit 1
           fi
 
-      - name: Docker compose
+      - name: Docker compose up
         uses: appleboy/ssh-action@master
         with:
           username: ${{ secrets.EC2_USERNAME }}
@@ -92,7 +92,7 @@ jobs:
           script: |
             sudo docker exec -i webserver bash -c 'echo "set \$service_url ${{ env.TARGET_UPSTREAM }};" > /etc/nginx/conf.d/service-env.inc && nginx -s reload' 
 
-      - name: Stop current server
+      - name: Stop current server and remove unused image
         uses: appleboy/ssh-action@master
         with:
           username: ${{ secrets.EC2_USERNAME }}
@@ -101,3 +101,4 @@ jobs:
           script: |
             sudo docker stop ${{env.CURRENT_UPSTREAM}}
             sudo docker rm ${{env.CURRENT_UPSTREAM}}
+            sudo docker image prune -a -f

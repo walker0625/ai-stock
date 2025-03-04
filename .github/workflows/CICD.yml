@@ -67,11 +67,11 @@ jobs:
           fi
 
       - name: Docker compose
-        uses: appleboy/ssh-action@v1.0.3
+        uses: appleboy/ssh-action@master
         with:
           username: ${{ secrets.EC2_USERNAME }}
           host: ${{ secrets.EC2_HOST }}
-          key: ${{ secrets.EC2_SSH_KEY }}
+          key: ${{ secrets.EC2_PRIVATE_KEY }}
           script_stop: true
           script: |
             sudo docker pull ${{ secrets.DOCKERHUB_USERNAME }}/aistock:latest
@@ -99,7 +99,7 @@ jobs:
         with:
           username: ${{ secrets.EC2_USERNAME }}
           host: ${{ secrets.EC2_HOST }}
-          key: ${{ secrets.EC2_SSH_KEY }}
+          key: ${{ secrets.EC2_PRIVATE_KEY }}
           script_stop: true
           script: |
             sudo docker stop ${{env.CURRENT_UPSTREAM}}

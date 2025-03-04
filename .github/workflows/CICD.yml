@@ -18,11 +18,10 @@ jobs:
         with:
           java-version: "21"
           distribution: "temurin"
-          cache: gradle
 
       - name: Build with Gradle
         run: |
-          echo ${{ secrets.APPLICATION_DEPLOY }} > ./src/main/resources/application.yml
+          echo ${{ secrets.APPLICATION_DEPLOY }} | base64 --decode > ./src/main/resources/application.yml
           chmod 777 ./gradlew
           ./gradlew clean build
 

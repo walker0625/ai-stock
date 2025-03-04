@@ -26,7 +26,11 @@ public class PresentationController {
     public String home(Model model,
                        HttpServletRequest request) {
 
-        String ip = request.getRemoteAddr();
+        String ip = request.getHeader("X-Real-IP");
+
+        if (ip == null) {
+            ip = request.getRemoteAddr();
+        }
 
         log.info("main access ip : {}", ip);
 

@@ -72,7 +72,6 @@ jobs:
           username: ${{ secrets.EC2_USERNAME }}
           host: ${{ secrets.EC2_HOST }}
           key: ${{ secrets.EC2_PRIVATE_KEY }}
-          script_stop: true
           script: |
             sudo docker pull ${{ secrets.DOCKERHUB_USERNAME }}/aistock:latest
             sudo docker-compose -f docker-compose-${{env.TARGET_UPSTREAM}}.yml up -d
@@ -90,7 +89,6 @@ jobs:
           username: ${{ secrets.EC2_USERNAME }}
           host: ${{ secrets.EC2_HOST }}
           key: ${{ secrets.EC2_PRIVATE_KEY }}
-          script_stop: true
           script: |
             sudo docker exec -i webserver bash -c 'echo "set \$service_url ${{ env.TARGET_UPSTREAM }};" > /etc/nginx/conf.d/service-env.inc && nginx -s reload' 
 
@@ -100,7 +98,6 @@ jobs:
           username: ${{ secrets.EC2_USERNAME }}
           host: ${{ secrets.EC2_HOST }}
           key: ${{ secrets.EC2_PRIVATE_KEY }}
-          script_stop: true
           script: |
             sudo docker stop ${{env.CURRENT_UPSTREAM}}
             sudo docker rm ${{env.CURRENT_UPSTREAM}}

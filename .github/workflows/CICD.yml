@@ -74,7 +74,7 @@ jobs:
           key: ${{ secrets.EC2_PRIVATE_KEY }}
           script: |
             sudo docker pull ${{ secrets.DOCKERHUB_USERNAME }}/aistock:latest
-            sudo docker-compose -f docker-compose-${{env.TARGET_UPSTREAM}}.yml up -d
+            sudo docker-compose -f docker-compose-${{ env.TARGET_UPSTREAM }}.yml up -d
 
       - name: Check target server deploy done
         uses: jtalk/url-health-check-action@v3

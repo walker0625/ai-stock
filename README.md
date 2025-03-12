@@ -12,7 +12,7 @@
 
 </br>
 
-![AI-STOCK](https://github.com/user-attachments/assets/21021dab-55b7-4869-9ddf-932786183e9a)
+![AI-STOCK_202503](https://github.com/user-attachments/assets/ae3f2843-7879-438d-aa32-cf921fd1d689)
 
 </br>
 

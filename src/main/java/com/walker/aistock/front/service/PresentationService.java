@@ -44,8 +44,8 @@ public class PresentationService {
         value = "stockList",
         key = "'stock_list:date:' + T(java.time.LocalDate).now().format(T(java.time.format.DateTimeFormatter).ofPattern('yyyy-MM-dd'))"
     )
-    public List<StockImageSpeechRes> stockWithImageAndSpeech() {
-        return stockRepository.findStocksWithImagesAndSpeechesBetweenThreeDays(LocalDate.now().minusDays(2), LocalDate.now());
+    public List<StockImageRes> stockWithImage() {
+        return stockRepository.findStocksWithImagesBetweenThreeDays(LocalDate.now().minusDays(2), LocalDate.now());
     }
 
     @Cacheable(

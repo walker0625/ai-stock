@@ -63,15 +63,17 @@ public class DataPersistenceService {
     }
 
     @Transactional(rollbackFor = Exception.class)
-    public void saveGeneratedFiles(ChatGPTImageRes chatGPTImageRes, byte[] speechBinary, Stock stock) {
+    public void saveGeneratedFiles(ChatGPTImageRes chatGPTImageRes, Stock stock) {
 
         String imageFileKey = UUID.randomUUID().toString();
         fileService.saveBase64Image(imageFileKey, chatGPTImageRes.getData().getFirst().getBase64());
         todayImageRepository.save(TodayImage.create(imageFileKey, stock));
 
+        /*
         String speechFileKey = UUID.randomUUID().toString();
         fileService.saveSpeechAudio(speechFileKey, speechBinary);
         speechRepository.save(Speech.create(speechFileKey, stock));
+         */
     }
 
 }

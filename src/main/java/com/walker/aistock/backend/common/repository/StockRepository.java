@@ -2,7 +2,7 @@ package com.walker.aistock.backend.common.repository;
 
 import com.walker.aistock.backend.common.entity.Stock;
 import com.walker.aistock.front.dto.res.StockDetailsRes;
-import com.walker.aistock.front.dto.res.StockImageSpeechRes;
+import com.walker.aistock.front.dto.res.StockImageRes;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
@@ -20,21 +20,17 @@ public interface StockRepository extends JpaRepository<Stock, Long>, StockCustom
 
     @Query(
         """
-        SELECT new com.walker.aistock.front.dto.res.StockImageSpeechRes(
+        SELECT new com.walker.aistock.front.dto.res.StockImageRes(
             st.id, st.name, st.ticker,
-            ti.imageFileKey,
-            sp.speechFileKey, sp.createdAt
+            ti.imageFileKey, ti.createdAt
         )
         FROM Stock st
         JOIN st.todayImages ti
-        JOIN st.speeches sp
-        WHERE FUNCTION('DATE', ti.createdAt) = FUNCTION('DATE', sp.createdAt)
-        AND FUNCTION('DATE', ti.createdAt) BETWEEN :twoDaysAgo AND :today
-        AND FUNCTION('DATE', sp.createdAt) BETWEEN :twoDaysAgo AND :today
-        ORDER BY sp.createdAt DESC
+        WHERE FUNCTION('DATE', ti.createdAt) BETWEEN :twoDaysAgo AND :today
+        ORDER BY ti.createdAt DESC
         """
     )
-    List<StockImageSpeechRes> findStocksWithImagesAndSpeechesBetweenThreeDays(LocalDate twoDaysAgo, LocalDate today);
+    List<StockImageRes> findStocksWithImagesBetweenThreeDays(LocalDate twoDaysAgo, LocalDate today);
 
     @Query(
         """
@@ -44,7 +40,6 @@ public interface StockRepository extends JpaRepository<Stock, Long>, StockCustom
             rc.strongBuy, rc.buy, rc.hold, rc.sell, rc.strongSell,
             re.content,
             ti.imageFileKey,
-            sp.speechFileKey,
             nb.script
         )
         FROM Stock st
@@ -52,7 +47,6 @@ public interface StockRepository extends JpaRepository<Stock, Long>, StockCustom
         JOIN st.todayImages ti ON ti.createdAt BETWEEN :startDate AND :endDate
         JOIN st.recommends rc ON rc.createdAt BETWEEN :startDate AND :endDate
         JOIN st.reports re ON re.createdAt BETWEEN :startDate AND :endDate
-        JOIN st.speeches sp ON sp.createdAt BETWEEN :startDate AND :endDate
         JOIN st.newsBriefings nb ON nb.createdAt BETWEEN :startDate AND :endDate
         WHERE st.id = :stockId
         """

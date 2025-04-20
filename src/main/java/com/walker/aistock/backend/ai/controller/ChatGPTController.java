@@ -51,10 +51,12 @@ public class ChatGPTController {
         return chatGPTService.chatGPTImage(chatGPTImageReq);
     }
 
+    /*
     @PostMapping("/speech")
     public byte[] chatGPTSpeech(@RequestBody ChatGPTSpeechReq chatGPTSpeechReq) {
         return chatGPTService.chatGPTSpeech(chatGPTSpeechReq);
     }
+    */
 
     @PostMapping("/text")
     public String chatGPTReport(@RequestBody ChatGPTAskReq chatGPTAskReq) {

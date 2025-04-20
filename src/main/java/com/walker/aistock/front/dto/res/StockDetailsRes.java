@@ -45,8 +45,6 @@ public class StockDetailsRes {
 
     String report;
 
-    String speechPath;
-
     String script;
 
     LocalDate date;
@@ -54,7 +52,7 @@ public class StockDetailsRes {
     public StockDetailsRes(Long stockId, String name, String ticker,
                            Double per, Double forwardPer, Double eps, Double forwardEps, Double peg, Double rsi, Double targetPrice, Double nowPrice, LocalDateTime date,
                            int strongBuy, int buy, int hold, int sell, int strongSell,
-                           String reportContent, String imageFileKey, String speechFileKey, String script) {
+                           String reportContent, String imageFileKey, String script) {
 
         this.stockId = stockId;
         this.name = name;
@@ -79,8 +77,6 @@ public class StockDetailsRes {
         this.report = reportContent.replaceAll("[#*]", "");
 
         this.imagePath = IMAGE_SRC_PATH.getValue() + imageFileKey + JPG.getValue();
-
-        this.speechPath = SPEECH_SRC_PATH.getValue() + speechFileKey + MP3.getValue();
 
         this.script = script;
     }

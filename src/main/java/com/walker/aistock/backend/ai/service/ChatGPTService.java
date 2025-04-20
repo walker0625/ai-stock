@@ -77,6 +77,9 @@ public class ChatGPTService {
 
         ChatGPTImageRes chatGPTImageRes = chatGPTImage(promptService.makePromptStockImageDraw(newsBriefing));
 
+        dataPersistenceService.saveGeneratedFiles(chatGPTImageRes, stock);
+
+        /*
         // TODO 단순히 자르는게 아니라 내용 자체를 speech api 제한 글자인 4000자 이내로 요약할 수 있게 변경
         String speechInput = stockReport + newsBriefing;
 
@@ -85,8 +88,7 @@ public class ChatGPTService {
         }
 
         byte[] speechBinary = chatGPTSpeech(new ChatGPTSpeechReq(speechInput));
-
-        dataPersistenceService.saveGeneratedFiles(chatGPTImageRes, speechBinary, stock);
+         */
 
         return stockReport + newsBriefing;
     }
@@ -95,12 +97,14 @@ public class ChatGPTService {
         return webClientService.chatGPTImage(chatGPTImageReq);
     }
 
-    public byte[] chatGPTSpeech(ChatGPTSpeechReq chatGPTSpeechReq) {
-        return webClientService.chatGPTSpeech(chatGPTSpeechReq);
-    }
-
     public String chatGPTText(ChatGPTAskReq chatGPTAskReq) {
         return webClientService.chatGPTAsk(chatGPTAskReq);
     }
+
+    /*
+    public byte[] chatGPTSpeech(ChatGPTSpeechReq chatGPTSpeechReq) {
+        return webClientService.chatGPTSpeech(chatGPTSpeechReq);
+    }
+     */
 
 }

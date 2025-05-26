@@ -36,10 +36,10 @@ public class PresentationController {
 
         accessService.checkIp(ip);
 
-        model.addAttribute("feargreed", presentationService.fearGreed());
+        //model.addAttribute("feargreed", presentationService.fearGreed());
         model.addAttribute("stocks", presentationService.stockWithImage());
 
-        return "main";
+        return "list";
     }
 
     @GetMapping("/stocks/{stockId}")
